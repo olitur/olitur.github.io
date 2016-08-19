@@ -3,8 +3,8 @@ title: Service Highlights
 menu: Highlights
 class: big
 features:
-	- header: First Service
-	  text: "Sed posuere consectetur est at lobortis. Vivamus aoreet faucibus dolor auctor."
+	- header: 01 Service
+	  text: "service 01"
 	  icon: comment-o
 	  linkurl: "http://www.getgrav.org" 
 	  linktext: "Find Out More"
