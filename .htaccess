@@ -1,0 +1,6 @@
+ErrorDocument 403 
+AuthUserFile ../.motpass
+AuthGroupFile /dev/null
+AuthName "Accès protégé au site Canopée" 
+AuthType Basic
+Require valid-user
