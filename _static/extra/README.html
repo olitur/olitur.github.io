@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="../basic.css" type="text/css" />
     <link rel="stylesheet" href="../pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../bootswatch-3.3.6/readable/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
@@ -74,7 +74,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../subscr_form_fr.html">Formulaire d&#8217;inscription aux cours</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../eval_form_en.html">Training evaluation form</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../temoignages.html">Témoignages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cours.html">Formations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cours.html#initiation-a-su">Initiation à <strong>Sketchup</strong></a></li>
@@ -126,8 +125,79 @@
     <div class="col-md-12 content">
       
   <div class="section" id="readme">
-<h1>README</h1>
-<p>Ce dépôt contient le site type <em>landing page</em> olitur.github.io (&#8211;&gt; canopee.org)</p>
+<span id="id1"></span><h1>README</h1>
+<div class="section" id="repo-user-github-io">
+<h2>Repo <strong>user.github.io</strong></h2>
+<p>Pubication pages html sur branche <em>master</em> seulement :</p>
+</div>
+<div class="section" id="repo-test">
+<h2>Repo <strong>test</strong></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Le contenu de ce repo test est copié du guide &#8220;Biologist guide to computing&#8221; accessible sur cette page <a class="reference external" href="https://github.com/tjelvar-olsson/biologists-guide-to-computing/">Github</a></p>
+</div>
+<p>Repo différent de <em>user</em>.github.io &#8211;&gt; publication pages html sur branches <em>master</em> ou <em>gh-pages</em> :</p>
+<div class="sidebar">
+<p class="first sidebar-title">URLs &amp; CNAME dans le repo <em>user</em>.github.io</p>
+<p class="last">Puisque j&#8217;ai un <code class="file docutils literal"><span class="pre">CNAME</span></code> qui pointe vers <code class="docutils literal"><span class="pre">canopee.org</span></code>
+dans mon repo <em>olitur.github.io</em>,
+tous les autres repo auront comme début d&#8217;url  <code class="docutils literal"><span class="pre">http://canopee.org/</span></code>
+pratique non ?</p>
+</div>
+<ul class="simple">
+<li>création du repo <em>test</em> sur la page github, visible<ul>
+<li>ici : <a class="reference external" href="https://github.com/olitur/test.git/">branche master = fichiers sources</a></li>
+<li>ou là : <a class="reference external" href="http://canopee.org/test/">branche gh-pages = fichiers compilés html</a></li>
+</ul>
+</li>
+<li>clonage en local : <code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/olitur/test.git</span></code></li>
+<li>initialisation projet <strong>sphinx-doc</strong> :<ul>
+<li><code class="docutils literal"><span class="pre">cd</span> <span class="pre">.\test\</span></code></li>
+<li><code class="docutils literal"><span class="pre">sphinx-quickstart.exe</span></code></li>
+</ul>
+</li>
+<li>Edition des fichiers sources (rest/docutils)<ul>
+<li>édition ...</li>
+<li>compilation en html : <code class="docutils literal"><span class="pre">.\make.bat</span> <span class="pre">html</span></code></li>
+</ul>
+</li>
+</ul>
+<div class="sidebar">
+<p class="first sidebar-title">contenu fichier <code class="file docutils literal"><span class="pre">.gitignore</span></code></p>
+<p><code class="docutils literal"><span class="pre">build/*</span></code></p>
+<p class="last"><em>la commande ``git add`` et suivante ignorera le dossier :file:`build`</em></p>
+</div>
+<ul class="simple">
+<li>Ajout de l&#8217;ensemble des fichiers à git (selon directives du fichier <code class="file docutils literal"><span class="pre">.gitignore</span></code>):<ul>
+<li><code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code></li>
+<li><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">-A</span></code></li>
+</ul>
+</li>
+<li>Versionning : <code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;première</span> <span class="pre">compilation</span> <span class="pre">et</span> <span class="pre">synchro&quot;</span></code></li>
+<li>Uploading : <code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">master</span></code></li>
+<li>Création et déplacement sur une branche pour publication des pages html uniquement :<ul>
+<li><code class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">--orphan</span> <span class="pre">gh-pages</span></code></li>
+<li><code class="docutils literal"><span class="pre">git</span> <span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">*</span></code></li>
+</ul>
+</li>
+<li>récupération des pages html de la branche master : <code class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">master</span> <span class="pre">build/html</span></code></li>
+<li>déplacement de tout le contenu du dossier à la racine de cette branche : <code class="docutils literal"><span class="pre">mv</span> <span class="pre">./build/html/*</span> <span class="pre">./</span></code></li>
+<li>nettoyage : <code class="docutils literal"><span class="pre">git</span> <span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">build</span></code></li>
+<li>ajout pages html à git (sur cette branche uniquement) :<ul>
+<li><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">-A</span></code></li>
+<li><code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;première</span> <span class="pre">publication</span> <span class="pre">pages</span> <span class="pre">html&quot;</span></code></li>
+</ul>
+</li>
+<li>Upload : <code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">gh-pages</span></code></li>
+</ul>
+<div class="sidebar">
+<p class="first sidebar-title">changement d&#8217;affichage selon les branches</p>
+<p class="last">En fonction des branches, le listing des dossiers &amp; fichiers change, pour refléter ce que git connaît. <strong>c&#8217;est virtuel</strong> (ouf! on peut facilement croire que tout est perdu ...)</p>
+</div>
+<ul class="simple">
+<li>Retour sur la branche master pour continuer à éditer : <code class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">master</span></code></li>
+</ul>
+</div>
 </div>
 
 

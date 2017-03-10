@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/readable/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
@@ -33,7 +33,7 @@
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="shortcut icon" href="_static/canopee_ico.ico"/>
     <link rel="search" title="Recherche" href="search.html" />
-    <link rel="next" title="Training evaluation form" href="eval_form_en.html" />
+    <link rel="next" title="Témoignages" href="temoignages.html" />
     <link rel="prev" title="Formations" href="cours.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -76,7 +76,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Formulaire d&#8217;inscription aux cours</a></li>
-<li class="toctree-l1"><a class="reference internal" href="eval_form_en.html">Training evaluation form</a></li>
 <li class="toctree-l1"><a class="reference internal" href="temoignages.html">Témoignages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cours.html">Formations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cours.html#initiation-a-su">Initiation à <strong>Sketchup</strong></a></li>
@@ -129,173 +128,351 @@
       
   <div class="section" id="formulaire-d-inscription-aux-cours">
 <h1>Formulaire d&#8217;inscription aux cours</h1>
- <?php
-        // set default form values
-        $prenom = "";
-        $nom = "";
-        $adresse = "";
-        $telephone = "";
-        $email = "";
-        $formation = "";
-        $date_de_facturation = "";
-        $note = "";
-
-        if ($_POST["SUBMIT"]) {
-
-                $found_error = 0;
-
-                // sender data
-                $sender_name = 'Canopee';
-                $sender_email ="info@canopee.org";
-
-                $sender_name = 'Inscription Formations';
-                $sender_email ="info@canopee.org";
-                // form data
-                $prenom = $_POST["prenom"];
-                $nom = $_POST["nom"];
-                $adresse = $_POST["adresse"];
-                $telephone = $_POST["telephone"];
-                $email = $_POST["email"];
-                $formation = $_POST["formation"];
-                $date_de_facturation = $_POST["date_de_facturation"];
-                $note = $_POST["note"];
-
-                // compose submitter mail
-                $from = 'From: ' . $sender_email;
-                $to = $email;
-                $subject = "Inscription réussie à " . $formation . " course";
-                $message = "Votre inscription a été enregistrée.\n Merci.";
-                $body = "From: $sender_name\n E-Mail: $sender_email\n Message:\n $message";
-                $additional_headers = $from . "\r\n" . 'Content-Type: text/plain; charset=UTF-8';
-                if ( !mail ($to, $subject, $body, $additional_headers) ) {
-                        error_log("Error sending inscription receipt email: " . $body);
-                        $found_error = 1;
-
-                } else {
-
-                        // compose internal archive mail
-                        $from = 'From: ' . $sender_email;
-                        $to = $sender_email;
-                        $subject = "Inscription au cours: " . $formation . " per " . $prenom . " " . $nom;
-
-                                // key:value message
-                                // $message = "Timestamp: " . date("c") . "\n" .
-                                                   // "Prénom: " . $prenom . "\n" .
-                                                   // "Nom: " . $nom . "\n" .
-                                                   // "Adresse: " . $adresse  . "\n" .
-                                                   // "Téléphone: " . $telephone  . "\n" .
-                                                   // "Email: " . $email  . "\n" .
-                                                   // "Formation: " . $formation  . "\n" .
-                                                   // "Date de Facturation: " . $date_de_facturation  . "\n" .
-                                                   // "Note: " . $note  . "\n";
-
-                                // with header csv message
-                                $header = "Timestamp;Prenom;Nom;Adresse;Telephone;Email;Formation;Date de Facturation;Note";
-                                $message =  date("c") .";" .
-                                                        $prenom  .";" .
-                                                        $nom  .";" .
-                                                        $adresse .";" .
-                                                        $telephone .";" .
-                                                        $email .";" .
-                                                        $formation .";" .
-                                                        $date_de_facturation  .";" .
-                                                        $note;
-
-                        $body = "From: $sender_name\n E-Mail: $sender_email\n Message:\n$header\n$message\n";
-                        $additional_headers = $from . "\r\n" . 'Content-Type: text/plain; charset=UTF-8';
-                        if ( !mail ($to, $subject, $body, $additional_headers) ) {
-                                error_log("Error sending internal inscription mail: ". $body);
-                                $found_error = 1;
-                        }
-
-                        // write message on a local file
-                        $report_filename = '/var/lib/form_results/training.log';
-                        if ( !file_exists($report_filename) ) {
-                                if ( !file_put_contents ( $report_filename , $header.PHP_EOL, FILE_APPEND | LOCK_EX) ) {
-                                        error_log("Error writing inscription log file for this header: ". $header);
-                                        $found_error = 1;
-                                }
-                        }
-                        if ( !file_put_contents ( $report_filename , $message.PHP_EOL, FILE_APPEND | LOCK_EX) ) {
-                                error_log("Error writing inscription log file for this message: ". $message);
-                                $found_error = 1;
-                        }
-                }
-
-                if ( $found_error ) {
-                        echo '<h2>Something went wrong. Try again or contact webmaster!</h2>';
-                } else {
-                        echo '<h2 style="color:red;">Successfully subscribed to ' . $formation . " course</h2>";
-                }
-        }
-?>
-<form action="subscr_form_fr.html" method="post" class="form-horizontal">
-<div class="form-group">
-<label for="edit-submitted-prenom" class="col-sm-3 control-label">Prénom <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<input type="text" id="edit-submitted-prenom" name="prenom" value="<?=$prenom ?>" size="60" maxlength="128" class="form-control" />
+<form method="post" action="//submit.form" onSubmit="return validateForm();">
+<div style="width: 400px;">
 </div>
-</div>
-<div class="form-group">
-<label for="edit-submitted-nom" class="col-sm-3 control-label">Nom <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<input type="text" id="edit-submitted-nom" name="nom" value="<?=$nom ?>" size="60" maxlength="128" class="form-control" />
-</div>
-</div>
-<div class="form-group">
-<label for="edit-submitted-adresse" class="col-sm-3 control-label">Adresse <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<input type="text" id="edit-submitted-adresse" name="adresse" value="<?=$adresse ?>" size="60" maxlength="128" class="form-control" />
-</div>
-</div>
-<div class="form-group">
-<label for="edit-submitted-telephone" class="col-sm-3 control-label">Telephone <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<input type="text" id="edit-submitted-telephone" name="telephone" value="<?=$telephone ?>" size="60" maxlength="128" class="form-control" />
-</div>
-</div>
-<div class="form-group">
-<label for="edit-submitted-e-mail" class="col-sm-3 control-label">E-Mail <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<input class="form-control" type="email" value="<?=$email ?>" id="edit-submitted-e-mail" name="email" size="60" />
-</div>
-</div>
-<div class="form-group">
-<label for="edit-submitted-formation" class="col-sm-3 control-label">Formation <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<select id="edit-submitted-formation" name="formation" class="form-control">
-        <option value="su_init" <?php if ($formation=="su_init") echo 'selected="selected"';?> >Initiation Sketchup</option>
-        <option value="su_perf1" <?php if ($formation=="su_perf1") echo 'selected="selected"';?> >Perfectionnement 1 Sketchup</option>
-        <option value="acad_init" <?php if ($formation=="acad_init") echo 'selected="selected"';?> >Initiation AutoCAD</option>
-        <option value="acad_perf1" <?php if ($formation=="acad_perf1") echo 'selected="selected"';?> >Perfectionnement 1 AutoCAD</option>
-        <option value="rhino_init" <?php if ($formation=="rhino_init") echo 'selected="selected"';?> >Initiation Rhinoceros</option>
-        <option value="rhino_perf1" <?php if ($formation=="rhino_perf1") echo 'selected="selected"';?> >Perfectionnement 1 Rhinoceros</option>
+<div style="padding-bottom: 18px;font-size : 21px;">Formulaire inscription</div>
+<div style="padding-bottom: 18px;">Choix de la formation<span style="color: red;"> *</span><br/>
+<select id="data_18" name="data_18" style="width : 450px;" class="form-control">
+<option> ... Choix dans liste ci-dessous ...</option>
+<option>Sketchup initiation</option>
+<option>Sketchup perfectionnement #1</option>
+<option>Sketchup perfectionnement #2</option>
+<option>AutoCAD initiation</option>
+<option>AutoCAD perfectionnement #1</option>
+<option>AutoCAD perfectionnement #2</option>
+<option>Rhino initiation</option>
+<option>Rhino perfectionnement #1</option>
+<option>Rhino perfectionnement #2</option>
+<option>Grasshopper initiation</option>
+<option>Grasshopper perfectionnement #1</option>
+<option>Grasshopper perfectionnement #2</option>
+<option>Revit initiation</option>
+<option>Revit perfectionnement #1</option>
+<option>Revit perfectionnement #2</option>
+<option>Dynamo initiation</option>
+<option>Dynamo perfectionnement #1</option>
+<option>Dynamo perfectionnement #2</option>
 </select>
 </div>
+<div style="display: flex; padding-bottom: 18px;width : 450px;">
+<div style=" margin-left : 0; margin-right : 1%; width : 49%;">Prénom<span style="color: red;"> *</span><br/>
+<input type="text" id="data_5" name="data_5" style="width: 100%;" class="form-control"/>
 </div>
+<div style=" margin-left : 1%; margin-right : 0; width : 49%;">Nom<span style="color: red;"> *</span><br/>
+<input type="text" id="data_6" name="data_6" style="width: 100%;" class="form-control"/>
+</div>
+</div><div style="padding-bottom: 18px;">Email<span style="color: red;"> *</span><br/>
+<input type="text" id="data_13" name="data_13" style="width : 450px;" class="form-control"/>
+</div>
+<div style="padding-bottom: 18px;">Téléphone<span style="color: red;"> *</span><br/>
+<input type="text" id="data_14" name="data_14" style="width : 450px;" class="form-control"/>
+</div>
+<div style="padding-bottom: 18px;">Société<br/>
+<input type="text" id="data_8" name="data_8" style="width : 450px;" class="form-control"/>
+</div>
+<div style="padding-bottom: 18px;">Fonction<br/>
+<input type="text" id="data_7" name="data_7" style="width : 450px;" class="form-control"/>
+</div>
+<div style="padding-bottom: 18px;">Adresse<span style="color: red;"> *</span><br/>
+<textarea id="data_15" false name="data_15" style="width : 450px;" rows="3" class="form-control"></textarea>
+</div>
+<div style="padding-bottom: 18px;">Code postal<span style="color: red;"> *</span><br/>
+<input type="text" id="data_16" name="data_16" style="width : 450px;" class="form-control"/>
+</div>
+<div style="padding-bottom: 18px;">Ville<span style="color: red;"> *</span><br/>
+<input type="text" id="data_10" name="data_10" style="width : 450px;" class="form-control"/>
+</div>
+<div style="padding-bottom: 18px;">Pays<span style="color: red;"> *</span><br/>
+<select id="data_12" name="data_12" style="width : 450px;" class="form-control"><option>Afghanistan</option>
+<option>Åland Islands</option>
+<option>Albania</option>
+<option>Algeria</option>
+<option>American Samoa</option>
+<option>Andorra</option>
+<option>Angola</option>
+<option>Anguilla</option>
+<option>Antigua and Barbuda</option>
+<option>Argentina</option>
+<option>Armenia</option>
+<option>Aruba</option>
+<option>Australia</option>
+<option>Austria</option>
+<option>Azerbaijan</option>
+<option>Bangladesh</option>
+<option>Barbados</option>
+<option>Bahamas</option>
+<option>Bahrain</option>
+<option>Belarus</option>
+<option>Belgium</option>
+<option>Belize</option>
+<option>Benin</option>
+<option>Bermuda</option>
+<option>Bhutan</option>
+<option>Bolivia</option>
+<option>Bosnia and Herzegovina</option>
+<option>Botswana</option>
+<option>Brazil</option>
+<option>British Indian Ocean Territory</option>
+<option>British Virgin Islands</option>
+<option>Brunei Darussalam</option>
+<option>Bulgaria</option>
+<option>Burkina Faso</option>
+<option>Burma</option>
+<option>Burundi</option>
+<option>Cambodia</option>
+<option>Cameroon</option>
+<option>Canada</option>
+<option>Cape Verde</option>
+<option>Cayman Islands</option>
+<option>Central African Republic</option>
+<option>Chad</option>
+<option>Chile</option>
+<option>China</option>
+<option>Christmas Island</option>
+<option>Cocos (Keeling) Islands</option>
+<option>Colombia</option>
+<option>Comoros</option>
+<option>Congo-Brazzaville</option>
+<option>Congo-Kinshasa</option>
+<option>Cook Islands</option>
+<option>Costa Rica</option>
+<option>Croatia</option>
+<option>Curaçao</option>
+<option>Cyprus</option>
+<option>Czech Republic</option>
+<option>Denmark</option>
+<option>Djibouti</option>
+<option>Dominica</option>
+<option>Dominican Republic</option>
+<option>East Timor</option>
+<option>Ecuador</option>
+<option>El Salvador</option>
+<option>Egypt</option>
+<option>Equatorial Guinea</option>
+<option>Eritrea</option>
+<option>Estonia</option>
+<option>Ethiopia</option>
+<option>Falkland Islands</option>
+<option>Faroe Islands</option>
+<option>Federated States of Micronesia</option>
+<option>Fiji</option>
+<option>Finland</option>
+<option>France</option>
+<option>French Guiana</option>
+<option>French Polynesia</option>
+<option>French Southern Lands</option>
+<option>Gabon</option>
+<option>Gambia</option>
+<option>Georgia</option>
+<option>Germany</option>
+<option>Ghana</option>
+<option>Gibraltar</option>
+<option>Greece</option>
+<option>Greenland</option>
+<option>Grenada</option>
+<option>Guadeloupe</option>
+<option>Guam</option>
+<option>Guatemala</option>
+<option>Guernsey</option>
+<option>Guinea</option>
+<option>Guinea-Bissau</option>
+<option>Guyana</option>
+<option>Haiti</option>
+<option>Heard and McDonald Islands</option>
+<option>Honduras</option>
+<option>Hong Kong</option>
+<option>Hungary</option>
+<option>Iceland</option>
+<option>India</option>
+<option>Indonesia</option>
+<option>Iraq</option>
+<option>Ireland</option>
+<option>Isle of Man</option>
+<option>Israel</option>
+<option>Italy</option>
+<option>Jamaica</option>
+<option>Japan</option>
+<option>Jersey</option>
+<option>Jordan</option>
+<option>Kazakhstan</option>
+<option>Kenya</option>
+<option>Kiribati</option>
+<option>Kuwait</option>
+<option>Kyrgyzstan</option>
+<option>Laos</option>
+<option>Latvia</option>
+<option>Lebanon</option>
+<option>Lesotho</option>
+<option>Liberia</option>
+<option>Libya</option>
+<option>Liechtenstein</option>
+<option>Lithuania</option>
+<option>Luxembourg</option>
+<option>Macau</option>
+<option>Macedonia</option>
+<option>Madagascar</option>
+<option>Malawi</option>
+<option>Malaysia</option>
+<option>Maldives</option>
+<option>Mali</option>
+<option>Malta</option>
+<option>Marshall Islands</option>
+<option>Martinique</option>
+<option>Mauritania</option>
+<option>Mauritius</option>
+<option>Mayotte</option>
+<option>Mexico</option>
+<option>Moldova</option>
+<option>Monaco</option>
+<option>Mongolia</option>
+<option>Montenegro</option>
+<option>Montserrat</option>
+<option>Morocco</option>
+<option>Mozambique</option>
+<option>Namibia</option>
+<option>Nauru</option>
+<option>Nepal</option>
+<option>Netherlands</option>
+<option>New Caledonia</option>
+<option>New Zealand</option>
+<option>Nicaragua</option>
+<option>Niger</option>
+<option>Nigeria</option>
+<option>Niue</option>
+<option>Norfolk Island</option>
+<option>Northern Mariana Islands</option>
+<option>Norway</option>
+<option>Oman</option>
+<option>Pakistan</option>
+<option>Palau</option>
+<option>Panama</option>
+<option>Papua New Guinea</option>
+<option>Paraguay</option>
+<option>Peru</option>
+<option>Philippines</option>
+<option>Pitcairn Islands</option>
+<option>Poland</option>
+<option>Portugal</option>
+<option>Puerto Rico</option>
+<option>Qatar</option>
+<option>Réunion</option>
+<option>Romania</option>
+<option>Russia</option>
+<option>Rwanda</option>
+<option>Saint Barthélemy</option>
+<option>Saint Helena</option>
+<option>Saint Kitts and Nevis</option>
+<option>Saint Lucia</option>
+<option>Saint Martin</option>
+<option>Saint Pierre and Miquelon</option>
+<option>Saint Vincent</option>
+<option>Samoa</option>
+<option>San Marino</option>
+<option>São Tomé and Príncipe</option>
+<option>Saudi Arabia</option>
+<option>Senegal</option>
+<option>Serbia</option>
+<option>Seychelles</option>
+<option>Sierra Leone</option>
+<option>Singapore</option>
+<option>Sint Maarten</option>
+<option>Slovakia</option>
+<option>Slovenia</option>
+<option>Solomon Islands</option>
+<option>Somalia</option>
+<option>South Africa</option>
+<option>South Georgia</option>
+<option>South Korea</option>
+<option>Spain</option>
+<option>Sri Lanka</option>
+<option>Sudan</option>
+<option>Suriname</option>
+<option>Svalbard and Jan Mayen</option>
+<option>Sweden</option>
+<option>Swaziland</option>
+<option>Switzerland</option>
+<option>Syria</option>
+<option>Taiwan</option>
+<option>Tajikistan</option>
+<option>Tanzania</option>
+<option>Thailand</option>
+<option>Togo</option>
+<option>Tokelau</option>
+<option>Tonga</option>
+<option>Trinidad and Tobago</option>
+<option>Tunisia</option>
+<option>Turkey</option>
+<option>Turkmenistan</option>
+<option>Turks and Caicos Islands</option>
+<option>Tuvalu</option>
+<option>Uganda</option>
+<option>Ukraine</option>
+<option>United Arab Emirates</option>
+<option>United Kingdom</option>
+<option>United States</option>
+<option>Uruguay</option>
+<option>Uzbekistan</option>
+<option>Vanuatu</option>
+<option>Vatican City</option>
+<option>Vietnam</option>
+<option>Venezuela</option>
+<option>Wallis and Futuna</option>
+<option>Western Sahara</option>
+<option>Yemen</option>
+<option>Zambia</option>
+<option>Zimbabwe</option>
+</select>
+</div>
+<div style="padding-bottom: 18px;"><input name="skip_Submit" value="Soumettre" type="submit"/></div>
+<div>
+<div style="float:right"><a href="https://www.100forms.com" id="lnk100" title="form to email">form to email</a></div>
+<script src="https://www.100forms.com/js/FORMKEY:Z3KRMUJKLZ94" type="text/javascript"></script>
+</div>
+</form>
 
-<div class="form-group">
-<label for="edit-submitted-dati-per-fatturazione" class="col-sm-3 control-label">Données pour facturation <span class="form-required" title="This field is mandatory.">*</span></label>
-<div class="col-sm-9">
-<textarea id="edit-submitted-dati-per-fatturazione" name="date_de_facturation" cols="60" rows="5" class="form-control"><?php echo htmlspecialchars($date_de_facturation); ?></textarea>
-</div>
-</div
-
-<div class="form-group">
-<label for="edit-submitted-note" class="col-sm-3 control-label text-right">Notes</label>
-<div class="col-sm-9">
-<textarea id="edit-submitted-note" name="note" cols="60" rows="5" class="form-control"><?php echo htmlspecialchars($note); ?></textarea><br><br>
- </div>
-</div>
-
-<div class="form-group">
-<div class="col-sm-3"></div>
-<div class="col-sm-9">
-<button type="submit" name="SUBMIT" value="Send" class="btn btn-success">Envoi</button>
-</div>
-</div>
-
-</form></div>
+<script type="text/javascript">
+function validateForm() {
+if (isEmpty(document.getElementById('data_5').value.trim())) {
+alert('Prénom is required!');
+return false;
+}
+if (isEmpty(document.getElementById('data_6').value.trim())) {
+alert('Nom is required!');
+return false;
+}
+if (isEmpty(document.getElementById('data_13').value.trim())) {
+alert('Email is required!');
+return false;
+}
+if (!validateEmail(document.getElementById('data_13').value.trim())) {
+alert('Email must be a valid email address!');
+return false;
+}
+if (isEmpty(document.getElementById('data_14').value.trim())) {
+alert('Téléphone is required!');
+return false;
+}
+if (isEmpty(document.getElementById('data_15').value.trim())) {
+alert('Adresse is required!');
+return false;
+}
+if (isEmpty(document.getElementById('data_16').value.trim())) {
+alert('Code postal is required!');
+return false;
+}
+if (isEmpty(document.getElementById('data_10').value.trim())) {
+alert('Ville is required!');
+return false;
+}
+return true;
+}
+function isEmpty(str) { return (str.length === 0 || !str.trim()); }
+function validateEmail(email) {
+var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,15}(?:\.[a-z]{2})?)$/i;
+return isEmpty(email) || re.test(email);
+}
+</script></div>
 
 
     </div>
