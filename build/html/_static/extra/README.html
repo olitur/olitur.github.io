@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-85468629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
     <title>README &#8212; Canopee - Formations DAO</title>
     
     <link rel="stylesheet" href="../basic.css" type="text/css" />
@@ -25,7 +37,7 @@
     <script type="text/javascript" src="../underscore.js"></script>
     <script type="text/javascript" src="../doctools.js"></script>
     <script type="text/javascript" src="../translations.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../js/jquery-fix.js"></script>
     <script type="text/javascript" src="../bootstrap-3.3.6/js/bootstrap.min.js"></script>
@@ -38,7 +50,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -58,7 +70,7 @@
           <ul class="nav navbar-nav">
             
                 <li><a href="../../learn/learn_index.html">Formations</a></li>
-                <li><a href="../../try/try_indexdocs.html">Documentation</a></li>
+                <li><a href="../../try/try_index.html">Documentations</a></li>
                 <li><a href="../../make/make_index.html">Realisations</a></li>
                 <li><a href="../../blog.html">News</a></li>
             
@@ -117,20 +129,20 @@
 <div class="section" id="repo-user-github-io">
 <h2>Repo <strong>user.github.io</strong></h2>
 <p>Pubication pages html sur branche <em>master</em> seulement :</p>
-<p>… à developper …</p>
+<p>... à developper ...</p>
 </div>
 <div class="section" id="repo-test">
 <h2>Repo <strong>test</strong></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Le contenu de ce repo test est copié du guide «&nbsp;Biologist guide to computing&nbsp;» accessible sur cette page <a class="reference external" href="https://github.com/tjelvar-olsson/biologists-guide-to-computing/">Github</a></p>
+<p class="last">Le contenu de ce repo test est copié du guide &#8220;Biologist guide to computing&#8221; accessible sur cette page <a class="reference external" href="https://github.com/tjelvar-olsson/biologists-guide-to-computing/">Github</a></p>
 </div>
-<p>Repo différent de <em>user</em>.github.io –&gt; publication pages html sur branches <em>master</em> ou <em>gh-pages</em> :</p>
+<p>Repo différent de <em>user</em>.github.io &#8211;&gt; publication pages html sur branches <em>master</em> ou <em>gh-pages</em> :</p>
 <div class="sidebar">
 <p class="first sidebar-title">URLs &amp; CNAME dans le repo <em>user</em>.github.io</p>
-<p class="last">Puisque j’ai un <code class="file docutils literal"><span class="pre">CNAME</span></code> qui pointe vers <code class="docutils literal"><span class="pre">canopee.org</span></code>
+<p class="last">Puisque j&#8217;ai un <code class="file docutils literal"><span class="pre">CNAME</span></code> qui pointe vers <code class="docutils literal"><span class="pre">canopee.org</span></code>
 dans mon repo <em>olitur.github.io</em>,
-tous les autres repo auront comme début d’url  <code class="docutils literal"><span class="pre">http://canopee.org/</span></code>
+tous les autres repo auront comme début d&#8217;url  <code class="docutils literal"><span class="pre">http://canopee.org/</span></code>
 pratique non ?</p>
 </div>
 <ul class="simple">
@@ -146,7 +158,7 @@ pratique non ?</p>
 </ul>
 </li>
 <li>Edition des fichiers sources (rest/docutils)<ul>
-<li>édition …</li>
+<li>édition ...</li>
 <li>compilation en html : <code class="docutils literal"><span class="pre">.\make.bat</span> <span class="pre">html</span></code></li>
 </ul>
 </li>
@@ -154,10 +166,10 @@ pratique non ?</p>
 <div class="sidebar">
 <p class="first sidebar-title">contenu fichier <code class="file docutils literal"><span class="pre">.gitignore</span></code></p>
 <p><code class="docutils literal"><span class="pre">build/*</span></code></p>
-<p class="last"><em>la commande «&nbsp;git add«&nbsp; et suivante ignorera le dossier :file:`build`</em></p>
+<p class="last"><em>la commande ``git add`` et suivante ignorera le dossier :file:`build`</em></p>
 </div>
 <ul class="simple">
-<li>Ajout de l’ensemble des fichiers à git (selon directives du fichier <code class="file docutils literal"><span class="pre">.gitignore</span></code>):<ul>
+<li>Ajout de l&#8217;ensemble des fichiers à git (selon directives du fichier <code class="file docutils literal"><span class="pre">.gitignore</span></code>):<ul>
 <li><code class="docutils literal"><span class="pre">git</span> <span class="pre">status</span></code></li>
 <li><code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">-A</span></code></li>
 </ul>
@@ -180,8 +192,8 @@ pratique non ?</p>
 <li>Upload : <code class="docutils literal"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">gh-pages</span></code></li>
 </ul>
 <div class="sidebar">
-<p class="first sidebar-title">changement d’affichage selon les branches</p>
-<p class="last">En fonction des branches, le listing des dossiers &amp; fichiers change, pour refléter ce que git connaît. <strong>c’est virtuel</strong> (ouf! on peut facilement croire que tout est perdu …)</p>
+<p class="first sidebar-title">changement d&#8217;affichage selon les branches</p>
+<p class="last">En fonction des branches, le listing des dossiers &amp; fichiers change, pour refléter ce que git connaît. <strong>c&#8217;est virtuel</strong> (ouf! on peut facilement croire que tout est perdu ...)</p>
 </div>
 <ul class="simple">
 <li>Retour sur la branche master pour continuer à éditer : <code class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">master</span></code></li>
@@ -202,7 +214,7 @@ pratique non ?</p>
     </p>
     <p>
         &copy; Copyright 2001-2017, Olivier TURLIER.<br/>
-      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.<br/>
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.<br/>
     </p>
   </div>
 </footer>

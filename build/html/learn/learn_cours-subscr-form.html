@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-85468629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
     <title>Formulaire d’inscription aux cours &#8212; Canopee - Formations DAO</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
@@ -25,7 +37,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/translations.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
@@ -40,7 +52,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -60,7 +72,7 @@
           <ul class="nav navbar-nav">
             
                 <li><a href="learn_index.html">Formations</a></li>
-                <li><a href="../try/try_indexdocs.html">Documentation</a></li>
+                <li><a href="../try/try_index.html">Documentations</a></li>
                 <li><a href="../make/make_index.html">Realisations</a></li>
                 <li><a href="../blog.html">News</a></li>
             
@@ -103,7 +115,7 @@
   <div class="row">
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
-<li><a class="reference internal" href="#">Formulaire d’inscription aux cours</a></li>
+<li><a class="reference internal" href="#">Formulaire d&#8217;inscription aux cours</a></li>
 </ul>
 
         </div>
@@ -111,7 +123,7 @@
     <div class="col-md-9 content">
       
   <div class="section" id="formulaire-d-inscription-aux-cours">
-<h1>Formulaire d’inscription aux cours</h1>
+<h1>Formulaire d&#8217;inscription aux cours</h1>
 <form method="post" action="//submit.form" onSubmit="return validateForm();">
 <div style="width: 400px;">
 </div>
@@ -479,7 +491,7 @@ return isEmpty(email) || re.test(email);
     </p>
     <p>
         &copy; Copyright 2001-2017, Olivier TURLIER.<br/>
-      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.<br/>
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.<br/>
     </p>
   </div>
 </footer>
