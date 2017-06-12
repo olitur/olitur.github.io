@@ -1,0 +1,4 @@
+User-agent: *
+#
+Disallow: subscr_form_fr.html
+Disallow: eval_form_en.html
