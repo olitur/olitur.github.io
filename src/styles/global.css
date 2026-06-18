@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@theme {
+  /* Typographie */
+  --font-sans:
+    Inter Variable, Inter, ui-sans-serif,
+    system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Palette Canopée */
+  --color-vert:    #2D5016;
+  --color-vert-hover: #3a6a1e;
+  --color-ocre:    #C4881A;
+  --color-creme:   #FAF7F1;
+  --color-ardoise: #4A5568;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+
+  /* Fond crème uni sur les pages internes ; la landing le masque via son image de fond fixe.
+     Les 3 pages d'axe ajoutent par-dessus un motif thématique (cf. Layout, prop `texture`). */
+  body {
+    background-color: var(--color-creme);
+  }
+}

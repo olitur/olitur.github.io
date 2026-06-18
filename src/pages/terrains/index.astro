@@ -1,0 +1,159 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+
+const terrains = await getCollection("terrains");
+terrains.sort((a, b) => a.data.repere - b.data.repere);
+
+const markers = terrains
+  .filter((t) => t.data.coordonnees)
+  .map((t) => {
+    const [lat, lon] = t.data.coordonnees!.split(",").map((s) => parseFloat(s.trim()));
+    return {
+      id: t.id,
+      lettre: t.data.lettre,
+      nom: t.data.nom,
+      etat: t.data.etat,
+      surface: t.data.surfaceParcelle,
+      href: `/terrains/${t.id}`,
+      lat,
+      lon,
+    };
+  });
+---
+
+<Layout title="Nos terrains — Canopée">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Terrains" }]} />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">Nos terrains</Fragment>
+      <Fragment slot="desc">
+        Quatre terrains le long de la Durance, à Puget, accueillent les parcelles maraîchères de
+        l'association. Cliquez sur un repère pour découvrir le terrain et ses parcelles.
+      </Fragment>
+    </Sectionhead>
+
+    <div
+      id="carte-terrains"
+      data-markers={JSON.stringify(markers)}
+      class="mt-10 rounded-3xl border border-stone-200 shadow-sm overflow-hidden"
+      style="height: 520px;"
+    >
+    </div>
+
+    <script>
+      import L from "leaflet";
+      import "leaflet/dist/leaflet.css";
+
+      function initCarteTerrains() {
+        const el = document.getElementById("carte-terrains") as
+          | (HTMLElement & { _leafletMap?: L.Map })
+          | null;
+        if (!el || el._leafletMap) return;
+
+        const markers = JSON.parse(el.dataset.markers || "[]") as Array<{
+          lettre: string;
+          nom: string;
+          etat: string;
+          surface: string;
+          href: string;
+          lat: number;
+          lon: number;
+        }>;
+
+        const map = L.map(el, { scrollWheelZoom: false }).setView([43.75, 5.255], 13);
+        el._leafletMap = map;
+
+        const satellite = L.tileLayer(
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          { attribution: "Tuiles © Esri — World Imagery", maxZoom: 19 }
+        ).addTo(map);
+        const plan = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: "abcd",
+          maxZoom: 19,
+        });
+        L.control.layers({ Satellite: satellite, Plan: plan }).addTo(map);
+
+        markers.forEach((m) => {
+          const couleur = m.etat === "travaillée" ? "#2D5016" : "#C4881A";
+          const icon = L.divIcon({
+            className: "",
+            html:
+              '<span style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9999px;background:' +
+              couleur +
+              ';color:#fff;font-weight:700;font-family:sans-serif;box-shadow:0 1px 5px rgba(0,0,0,.45);border:2px solid #fff">' +
+              m.lettre +
+              "</span>",
+            iconSize: [34, 34],
+            iconAnchor: [17, 17],
+          });
+          L.marker([m.lat, m.lon], { icon })
+            .addTo(map)
+            .bindTooltip("Terrain " + m.lettre + " — " + m.nom + " (" + m.surface + ")")
+            .on("click", () => {
+              window.location.href = m.href;
+            });
+        });
+
+        if (markers.length > 0) {
+          const bounds = L.latLngBounds(markers.map((m) => [m.lat, m.lon] as [number, number]));
+          map.fitBounds(bounds, { padding: [60, 60], maxZoom: 15 });
+        }
+        setTimeout(() => map.invalidateSize(), 150);
+      }
+
+      initCarteTerrains();
+    </script>
+
+    <p class="mt-3 text-center text-sm text-stone-500">
+      Repère vert = parcelles prêtes à cultiver · ocre = en friche (tarif réduit).
+    </p>
+
+    <ul class="mt-10 grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
+      {
+        terrains.map((terrain) => (
+          <li>
+            <a href={`/terrains/${terrain.id}`} class="block group h-full">
+              <div class="h-full bg-white border border-stone-200 rounded-3xl p-6 shadow-sm hover:border-[#2D5016] hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                <div class="flex items-start justify-between gap-3 flex-wrap">
+                  <h2 class="text-xl font-semibold text-stone-800 group-hover:text-[#2D5016]">
+                    Terrain {terrain.data.lettre} — {terrain.data.nom}
+                  </h2>
+                  <span
+                    class:list={[
+                      "shrink-0 px-3 py-1 rounded-full text-xs font-medium",
+                      terrain.data.etat === "travaillée"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-amber-100 text-amber-800",
+                    ]}>
+                    {terrain.data.etat === "travaillée" ? "Prêt à cultiver" : "En friche"}
+                  </span>
+                </div>
+                <p class="text-sm text-stone-500 mt-1">{terrain.data.lieu}</p>
+                <p class="mt-3 text-stone-600 text-sm">{terrain.data.resume}</p>
+                <div class="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-stone-500">
+                  <span>📐 {terrain.data.surfaceParcelle} / parcelle</span>
+                  <span>{terrain.data.irriguee ? "💧 Irriguée" : "💧 À équiper"}</span>
+                </div>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="text-center mt-12">
+      <p class="text-stone-500 text-sm">
+        Vous cherchez une parcelle précise ?
+        <a href="/parcelles" class="underline hover:text-[#2D5016] ml-1">Voir toutes les parcelles</a>
+      </p>
+    </div>
+  </Container>
+</Layout>

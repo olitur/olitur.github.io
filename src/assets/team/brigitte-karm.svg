@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" role="img" aria-label="Portrait à venir — Brigitte Karm">
+  <rect width="400" height="480" fill="#ECEAE4"/>
+  <circle cx="200" cy="196" r="98" fill="#CFC9BD"/>
+  <text x="200" y="228" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="700" fill="#FAF8F4">BK</text>
+  <text x="200" y="404" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" fill="#9A948A">Photo à venir</text>
+</svg>

@@ -1,0 +1,94 @@
+---
+import { Icon } from "astro-icon/components";
+
+const blocs = [
+  {
+    titre: "Résilience alimentaire",
+    description:
+      "Maraîchage bio-intensif sur petites surfaces, céréales anciennes et amendements produits sur site (biochar, purins, LiFoFer). Valoriser les ressources gratuites du terrain.",
+    href: "/resilience-alimentaire",
+    label: "Découvrir l'axe",
+    icon: "lucide:wheat",
+    from: "from-[#2D5016]",
+    to: "to-[#3a6a1e]",
+    accent: "text-[#2D5016]",
+    iconBg: "bg-[#2D5016]/10",
+    iconHover: "group-hover:bg-[#2D5016]",
+  },
+  {
+    titre: "Autonomie énergétique",
+    description:
+      "Huile végétale carburant, gazogène à plaquettes d'élagage, éolienne Piggott autoconstruite, fours solaires et poêles de masse. S'affranchir des énergies fossiles.",
+    href: "/autonomie-energetique",
+    label: "Découvrir l'axe",
+    icon: "lucide:zap",
+    from: "from-[#C4881A]",
+    to: "to-[#8a5a12]",
+    accent: "text-[#8a5a12]",
+    iconBg: "bg-[#C4881A]/15",
+    iconHover: "group-hover:bg-[#C4881A]",
+  },
+  {
+    titre: "Construction bioclimatique",
+    description:
+      "Bottes de paille, pisé, maisons semi-enterrées et abris de jardin. Un habitat économe et adapté au climat qui vient, en autoconstruction accompagnée.",
+    href: "/construction",
+    label: "Découvrir l'axe",
+    icon: "lucide:home",
+    from: "from-[#5d4037]",
+    to: "to-[#4A5568]",
+    accent: "text-[#5d4037]",
+    iconBg: "bg-[#5d4037]/10",
+    iconHover: "group-hover:bg-[#5d4037]",
+  },
+];
+---
+
+<section class="py-20">
+  <div class="text-center mb-14">
+    <span class="text-[#C4881A] font-semibold uppercase tracking-widest text-sm">
+      Nos activités
+    </span>
+    <h2 class="mt-3 text-4xl font-bold text-[#2D5016]">
+      Trois axes, un territoire
+    </h2>
+    <p class="mt-4 text-stone-600 max-w-xl mx-auto leading-relaxed">
+      En Luberon, Canopée réunit des familles autour de la terre, du partage
+      de savoir-faire et de l'autonomie durable.
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-8">
+    {
+      blocs.map((bloc) => (
+        <div class="group relative overflow-hidden bg-white border border-stone-200 rounded-[2rem] p-8 flex flex-col shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          <div
+            class:list={["pointer-events-none absolute inset-0 bg-gradient-to-br opacity-20", bloc.from, bloc.to]}
+            aria-hidden="true"
+          />
+          <div class="relative flex flex-col flex-1">
+            <div
+              class:list={[
+                "w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-colors group-hover:text-white",
+                bloc.iconBg,
+                bloc.accent,
+                bloc.iconHover,
+              ]}>
+              <Icon name={bloc.icon} class="w-8 h-8" />
+            </div>
+            <h3 class="text-xl font-bold text-stone-800 mb-3">{bloc.titre}</h3>
+            <p class="text-stone-600 leading-relaxed flex-1">{bloc.description}</p>
+            <a
+              href={bloc.href}
+              class:list={["mt-6 inline-flex items-center gap-1 font-semibold text-sm hover:gap-2 transition-all", bloc.accent]}>
+              {bloc.label}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

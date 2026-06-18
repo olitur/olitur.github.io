@@ -1,0 +1,57 @@
+---
+// En-tête de page d'axe — titre clair (sur le crème + motif d'axe) + fil d'Ariane vers les axes
+interface Props {
+  eyebrow: string;
+  titre: string;
+  intro: string;
+  // Classes de dégradé Tailwind (ex. "from-[#2D5016]", "to-[#3a6a1e]") — rendues en voile léger.
+  from: string;
+  to: string;
+}
+const { eyebrow, titre, intro, from, to } = Astro.props;
+
+const axes = [
+  { titre: "Résilience alimentaire", path: "/resilience-alimentaire" },
+  { titre: "Autonomie énergétique", path: "/autonomie-energetique" },
+  { titre: "Construction bioclimatique", path: "/construction" },
+];
+const current = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<section class="relative overflow-hidden border-b border-stone-200 pt-12 pb-10">
+  <!-- Voile léger de la couleur de l'axe (teinte douce, pas la bande saturée d'origine) -->
+  <div
+    class:list={["pointer-events-none absolute inset-0 bg-gradient-to-br opacity-20", from, to]}
+    aria-hidden="true">
+  </div>
+  <div class="relative max-w-4xl mx-auto px-5">
+    <span class="inline-block text-[#C4881A] font-semibold uppercase tracking-widest text-sm mb-3">
+      {eyebrow}
+    </span>
+    <h1 class="text-4xl md:text-5xl font-bold text-[#2D5016] leading-tight">
+      {titre}
+    </h1>
+    <p class="mt-4 text-lg text-stone-600 max-w-2xl leading-relaxed">
+      {intro}
+    </p>
+  </div>
+</section>
+
+<nav class="border-b border-stone-200 bg-white/80 backdrop-blur sticky top-0 z-40">
+  <div class="max-w-4xl mx-auto px-5 flex flex-wrap gap-x-6 gap-y-1 py-3 text-sm">
+    {
+      axes.map((a) => (
+        <a
+          href={a.path}
+          class:list={[
+            "font-medium transition-colors",
+            current === a.path
+              ? "text-[#2D5016] border-b-2 border-[#C4881A] pb-0.5"
+              : "text-stone-500 hover:text-[#2D5016]",
+          ]}>
+          {a.titre}
+        </a>
+      ))
+    }
+  </div>
+</nav>

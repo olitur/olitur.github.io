@@ -1,0 +1,49 @@
+---
+draft: false
+title: "Dimensionner un réseau d'irrigation par motopompe"
+snippet: "Comment alimenter une parcelle maraîchère depuis la Durance : motopompe diesel, nourrice PEHD et rampes d'asperseurs. Une note de calcul hydraulique complète, et l'enseignement clé du passage du DN32 au DN63."
+image:
+  src: "./cover.jpg"
+  alt: "Réseau d'irrigation par motopompe — schéma hydraulique"
+publishDate: "2026-06-12"
+author: "Olivier Turlier"
+category: "Eau & irrigation"
+tags: ["irrigation", "motopompe", "hydraulique", "durance"]
+---
+
+import Carousel from "@/components/carousel.astro";
+
+Irriguer une parcelle maraîchère depuis un point d'eau gratuit — ici la **Durance** — ne s'improvise pas : un diamètre de tuyau sous-dimensionné, et la pression s'effondre au bout de la rampe, laissant les derniers asperseurs à sec. Cette note de calcul de Canopée dimensionne, de bout en bout, le réseau d'arrosage de la parcelle Durance : **motopompe diesel**, **nourrice PEHD PN6 DN63** et **rampes d'asperseurs autorégulants**.
+
+## Le problème posé
+
+À partir d'une motopompe et d'une parcelle découpée en rampes, il faut garantir une **pression suffisante et homogène** à chaque asperseur, du premier au dernier. La note part des hypothèses communes (parcelle, configuration du réseau), définit les équipements (motopompe et sa courbe, filtre à tamis, canalisations, asperseurs) et la topologie du réseau.
+
+## La méthode hydraulique
+
+Le calcul s'appuie sur les références du domaine :
+
+- **Darcy-Weisbach** pour les pertes de charge linéaires dans les canalisations,
+- **Colebrook-White** pour le facteur de frottement,
+- le **facteur de Christiansen** pour les rampes à prises multiples (les asperseurs prélèvent le débit le long de la rampe, ce qui réduit progressivement les pertes).
+
+S'y ajoutent les pertes singulières (coudes, tés, filtre) et l'interpolation de la **courbe de la pompe** pour trouver le point de fonctionnement réel.
+
+{/* Photos de l'installation : src/content/blog/reseau-irrigation-motopompe/images/ */}
+<Carousel dossier="reseau-irrigation-motopompe" titre="En images" />
+
+## L'enseignement clé : DN32 → DN63
+
+Le résultat marquant de l'étude est l'effet du **diamètre de la nourrice**. Le passage du **DN32 au DN63** change radicalement le comportement du réseau : la vitesse de l'eau chute, les pertes de charge linéaires s'effondrent, et la pression redevient homogène jusqu'au dernier asperseur. Une leçon contre-intuitive mais classique en hydraulique : **surdimensionner la conduite principale coûte peu et résout l'essentiel des problèmes de pression**.
+
+## Cinq scénarios comparés
+
+La note compare **cinq scénarios** de rampes (longueurs, diamètres, nombre d'asperseurs), avec profils de pression asperseur par asperseur, vérification de la **tenue en pression** du PEHD (PN6), équilibrage des rampes et calcul du **temps de remplissage** initial. Des courbes comparatives appuient l'analyse et les conclusions.
+
+## Un calcul reproductible
+
+L'ensemble est piloté par un **script Python paramétrique** : les données d'entrée vivent dans un fichier `config.json`, le script calcule (hydraulique, scénarios) et réinjecte les résultats, qui alimentent directement le document. Ajouter ou modifier un scénario revient à éditer quelques paramètres — la note se met à jour seule. Elle se termine par un volet **pratique** : déroulage et tirage de la nourrice, raccordement des tés, pose des asperseurs.
+
+---
+
+📄 **[Télécharger la note de calcul complète (PDF)](/documents/guide/annexes/irrigation-motopompe.pdf)** — méthode, scénarios chiffrés et guide d'installation.

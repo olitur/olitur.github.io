@@ -1,0 +1,229 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import { parcelles as csvParcelles } from "@/data/parcelles";
+
+export async function getStaticPaths() {
+  const parcelles = await getCollection("parcelles");
+  return parcelles.map((parcelle) => ({
+    params: { id: parcelle.id },
+    props: { parcelle },
+  }));
+}
+
+const { parcelle } = Astro.props;
+const data = parcelle.data;
+const { Content } = await render(parcelle);
+
+// Le statut loué/disponible fait foi depuis le CSV (src/data/parcelles.csv)
+const csvParcelle = csvParcelles.find((p) => p.slug === parcelle.id);
+const disponible = csvParcelle ? csvParcelle.dispo : data.disponible;
+
+const coords = data.coordonnees?.replace(/\s+/g, "");
+const mapSrc = coords
+  ? `https://www.google.com/maps?q=${coords}&z=17&t=k&hl=fr&output=embed`
+  : null;
+
+const aDesColonnes = !!(data.sol || data.irrigation || (data.equipements && data.equipements.length > 0));
+
+const refCourte = csvParcelle ? `Parcelle ${csvParcelle.ref}` : data.titre;
+const filAriane = data.terrain
+  ? [
+      { label: "Terrains", href: "/terrains" },
+      { label: `Terrain ${data.terrain.toUpperCase()}`, href: `/terrains/${data.terrain}` },
+      { label: refCourte },
+    ]
+  : [
+      { label: "Parcelles", href: "/parcelles" },
+      { label: refCourte },
+    ];
+---
+
+<Layout title={`${data.titre} — Canopée`}>
+  <Container>
+    <div class="max-w-3xl mx-auto mt-14">
+      <Breadcrumb items={filAriane} />
+
+      <div class="flex items-start justify-between gap-4 flex-wrap mt-4">
+        <h1 class="text-3xl font-bold text-stone-800">{data.titre}</h1>
+        <span
+          class:list={[
+            "px-3 py-1 rounded-full text-sm font-medium",
+            disponible
+              ? "bg-emerald-100 text-emerald-800"
+              : "bg-stone-100 text-stone-500",
+          ]}>
+          {disponible ? "Disponible" : "Louée"}
+        </span>
+      </div>
+
+      <p class="text-stone-500 mt-1">{data.localisation}</p>
+
+      {
+        mapSrc && (
+          <div class="mt-6">
+            <iframe
+              src={mapSrc}
+              width="100%"
+              height="340"
+              class="rounded-2xl border border-stone-200 shadow-sm"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title={`Localisation de ${data.titre}`}
+            />
+            {data.emplacement && (
+              <a
+                href={data.emplacement}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block mt-2 text-sm text-[#2D5016] underline">
+                Ouvrir dans Google Maps →
+              </a>
+            )}
+          </div>
+        )
+      }
+
+      <dl class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Surface</dt>
+          <dd class="mt-1 font-semibold text-stone-700">{data.surface}</dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Prix au m²</dt>
+          <dd class="mt-1 font-semibold text-stone-700">
+            {data.prixM2 ? `${data.prixM2}/m²/mois` : "—"}
+          </dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Total annuel</dt>
+          <dd class="mt-1 font-semibold text-stone-700">{data.prix}</dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Disponibilité</dt>
+          <dd class="mt-1 font-semibold">
+            {
+              disponible ? (
+                <a href="/nous-rejoindre#contact" class="text-[#2D5016] underline">
+                  Faire une demande
+                </a>
+              ) : (
+                <span class="text-stone-600">
+                  Louée
+                  {data.finBail && (
+                    <span class="block text-xs font-normal text-stone-400">
+                      Fin de bail : {data.finBail}
+                    </span>
+                  )}
+                </span>
+              )
+            }
+          </dd>
+        </div>
+      </dl>
+
+      <div class="prose prose-stone mt-8 max-w-none">
+        <Content />
+      </div>
+
+      {
+        aDesColonnes && (
+          <div class="mt-8 grid gap-6 sm:grid-cols-3">
+            {data.sol && (
+              <div>
+                <h2 class="font-semibold text-stone-700 mb-3">Sol</h2>
+                <ul class="space-y-3 text-sm text-stone-600">
+                  <li>
+                    <span class="flex items-center gap-2">
+                      <span class:list={[data.sol.travail ? "text-emerald-600" : "text-stone-300"]}>
+                        {data.sol.travail ? "✓" : "✗"}
+                      </span>
+                      <span class="font-medium text-stone-700">Travail du sol</span>
+                    </span>
+                    {data.sol.travailDetail && (
+                      <span class="block pl-6 text-stone-500">{data.sol.travailDetail}</span>
+                    )}
+                  </li>
+                  <li>
+                    <span class="flex items-center gap-2">
+                      <span class:list={[data.sol.amendement ? "text-emerald-600" : "text-stone-300"]}>
+                        {data.sol.amendement ? "✓" : "✗"}
+                      </span>
+                      <span class="font-medium text-stone-700">Amendement / broyat</span>
+                    </span>
+                    {data.sol.amendementDetail && (
+                      <span class="block pl-6 text-stone-500">{data.sol.amendementDetail}</span>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            {data.irrigation && (
+              <div>
+                <h2 class="font-semibold text-stone-700 mb-3">Irrigation</h2>
+                <p class="text-sm text-stone-600">{data.irrigation}</p>
+              </div>
+            )}
+
+            {data.equipements && data.equipements.length > 0 && (
+              <div>
+                <h2 class="font-semibold text-stone-700 mb-3">Équipements</h2>
+                <ul class="space-y-1 text-sm text-stone-600">
+                  {data.equipements.map((item) => (
+                    <li class="flex items-start gap-2">
+                      <span class="text-emerald-600">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )
+      }
+
+      {
+        !aDesColonnes && data.amenagements && data.amenagements.length > 0 && (
+          <div class="mt-8">
+            <h2 class="font-semibold text-stone-700 mb-2">Aménagements disponibles</h2>
+            <ul class="space-y-1">
+              {data.amenagements.map((item) => (
+                <li class="flex items-center gap-2 text-stone-600 text-sm">
+                  <span class="text-emerald-600">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <div class="mt-10 p-6 bg-white border border-stone-200 rounded-3xl shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-stone-700 font-medium">
+          {
+            disponible
+              ? "Cette parcelle est disponible."
+              : "Cette parcelle est actuellement louée."
+          }
+        </p>
+        <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+          {
+            disponible && (
+              <a href="/documents/jardins/contrat_location.pdf" target="_blank" rel="noopener noreferrer" class="text-[#2D5016] underline">
+                Contrat de location type
+              </a>
+            )
+          }
+          <a href="/documents" class="text-[#2D5016] underline">
+            Documentation Canopée
+          </a>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>

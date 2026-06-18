@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-label="Placeholder — Abris de jardin Canopée">
+  <rect width="1200" height="750" fill="#FAF8F4"/>
+  <rect width="1200" height="750" fill="#5d4037" opacity="0.08"/>
+  <g stroke="#5d4037" stroke-opacity="0.20" stroke-width="3" fill="none" stroke-linejoin="round">
+    <path d="M510 320 v100 h180 v-100"/>
+    <path d="M486 322 l114 -86 l114 86"/>
+  </g>
+  <text x="600" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="700" fill="#2D5016">Canopée</text>
+  <text x="600" y="556" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#57534e">Abris de jardin — visuel à venir</text>
+</svg>

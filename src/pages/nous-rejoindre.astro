@@ -1,0 +1,184 @@
+---
+import Contactform from "@/components/contactform.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import Layout from "@/layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+
+const faqs = [
+  {
+    q: "Comment adhérer à Canopée ?",
+    r: "L'adhésion se fait à partir de 25 €/an et ouvre l'accès aux parcelles, aux formations et aux chantiers participatifs. Choisissez votre formule ci-dessus, puis écrivez-nous via le formulaire pour finaliser.",
+  },
+  {
+    q: "Comment louer une parcelle ?",
+    r: 'Les parcelles (350 à 700 m²) sont réservées aux membres à jour de cotisation. Consultez les disponibilités sur la page <a href="/terrains" class="text-[#2D5016] underline hover:text-[#3a6a1e]">Terrains</a>, puis contactez-nous pour réserver.',
+  },
+  {
+    q: "Proposez-vous des formations et des chantiers participatifs ?",
+    r: 'Oui : maraîchage bio-intensif, autonomie énergétique et construction bioclimatique. Les formations sont gratuites pour les adhérents. Le programme est sur la page <a href="/formations" class="text-[#2D5016] underline hover:text-[#3a6a1e]">Formations</a>.',
+  },
+  {
+    q: "Où se trouvent les terrains ?",
+    r: "À Puget-sur-Durance (84) et ses environs immédiats, en plaine de Durance, au cœur du Luberon.",
+  },
+];
+---
+
+<Layout
+  title="Nous rejoindre"
+  description="Rejoindre l'association Canopée — Puget-sur-Durance (84) : adhésion, location de parcelles, formations et chantiers participatifs au cœur du Luberon.">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Nous rejoindre" }]} />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">Nous rejoindre</Fragment>
+      <Fragment slot="desc">
+        Adhérer, cultiver une parcelle, suivre une formation — ou simplement nous écrire.
+        Voici comment faire partie de Canopée.
+      </Fragment>
+    </Sectionhead>
+
+    <!-- Adhérer -->
+    <section id="adherer" class="scroll-mt-24 mt-16 max-w-5xl mx-auto">
+      <h2 class="text-2xl font-bold text-[#2D5016] text-center mb-2">Adhérer à Canopée</h2>
+      <p class="text-center text-stone-500 max-w-2xl mx-auto mb-8">
+        L'adhésion ouvre l'accès aux parcelles, aux formations gratuites et aux chantiers
+        participatifs. Elle se finalise via le <a href="#contact" class="text-[#2D5016] underline hover:text-[#3a6a1e]">formulaire ci-dessous</a>.
+      </p>
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="bg-white rounded-xl p-6 border border-stone-200">
+          <h3 class="text-xl font-bold text-[#2D5016] mb-4">Adhésion individuelle</h3>
+          <p class="text-3xl font-bold text-stone-800 mb-1">25 €<span class="text-lg font-normal text-stone-500">/an</span></p>
+          <ul class="mt-4 space-y-2 text-stone-600 text-sm">
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Accès aux formations et ateliers gratuits</li>
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Accès à la bibliothèque de ressources</li>
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Participation aux AG et décisions associatives</li>
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Newsletter mensuelle</li>
+          </ul>
+        </div>
+
+        <div class="bg-[#2D5016] rounded-xl p-6 text-white">
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <h3 class="text-xl font-bold">Adhésion avec parcelle</h3>
+            <span class="shrink-0 text-xs font-semibold bg-[#C4881A] text-white px-2 py-1 rounded-full">Cotisation réduite</span>
+          </div>
+          <p class="text-3xl font-bold mb-1 whitespace-nowrap">20 € + loyer parcelle<span class="text-lg font-normal opacity-70">/an</span></p>
+          <p class="text-sm text-emerald-200 mb-1">Cotisation réduite à 20 € (au lieu de 25 €) pour les locataires de parcelle.</p>
+          <ul class="mt-4 space-y-2 text-emerald-100 text-sm">
+            <li class="flex gap-2"><span>✓</span> Tous les avantages de l'adhésion individuelle</li>
+            <li class="flex gap-2"><span>✓</span> Attribution d'une parcelle cultivable</li>
+            <li class="flex gap-2"><span>✓</span> Accès eau, outils et espaces communs</li>
+            <li class="flex gap-2"><span>✓</span> Accompagnement la première saison</li>
+            <li class="flex gap-2"><span>✓</span> Graines issues des semences paysannes</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-6 text-sm text-stone-500 max-w-3xl mx-auto text-center">
+        La cotisation est valable du 1ᵉʳ janvier au 31 décembre de l'année en cours. Les adhésions
+        souscrites après le 1ᵉʳ octobre courent jusqu'au 31 décembre de l'année suivante.
+      </p>
+    </section>
+
+    <!-- Nous contacter -->
+    <div id="contact" class="scroll-mt-24 mt-20">
+      <h2 class="text-2xl font-bold text-[#2D5016] text-center mb-2">Nous contacter</h2>
+      <p class="text-center text-stone-500 max-w-2xl mx-auto mb-10">
+        Une question, une demande d'adhésion ou de parcelle ? Écrivez-nous, nous répondons rapidement.
+      </p>
+
+      <div class="grid lg:grid-cols-2 gap-12 mx-auto max-w-5xl">
+        <!-- Formulaire -->
+        <div>
+          <h3 class="text-xl font-bold text-[#2D5016] mb-6">Formulaire</h3>
+          <Contactform />
+        </div>
+
+        <!-- Coordonnées -->
+        <div class="space-y-8">
+          <div>
+            <h3 class="text-xl font-bold text-[#2D5016] mb-6">Coordonnées</h3>
+            <div class="space-y-4 text-stone-600">
+              <div class="flex items-start gap-3">
+                <Icon class="text-[#C4881A] w-5 h-5 mt-0.5 shrink-0" name="uil:map-marker" />
+                <div>
+                  <div class="font-medium text-stone-800">Adresse</div>
+                  <a href="#carte" class="hover:text-[#2D5016] underline decoration-stone-300">
+                    361 chemin des Basses Beaumes, 84360 Puget
+                  </a>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <Icon class="text-[#C4881A] w-5 h-5 mt-0.5 shrink-0" name="uil:envelope" />
+                <div>
+                  <div class="font-medium text-stone-800">Email</div>
+                  <a href="mailto:o.turlier@canopee.org" class="hover:text-[#2D5016]">
+                    o.turlier@canopee.org
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-stone-200 bg-white p-5">
+            <h3 class="font-semibold text-stone-700 mb-2">Zone d'activité</h3>
+            <p class="text-sm text-stone-600 leading-relaxed">
+              Puget-sur-Durance (84) et ses environs, en plaine de Durance, au cœur du
+              <strong>Luberon</strong> (Vaucluse).
+            </p>
+          </div>
+
+          <div class="rounded-xl border border-stone-200 bg-stone-50 p-5">
+            <h3 class="font-semibold text-stone-700 mb-2">Pour aller plus vite</h3>
+            <p class="text-sm text-stone-600 leading-relaxed">
+              Précisez votre demande : <strong>adhésion</strong>, <strong>location de parcelle</strong>,
+              <strong>formation</strong> ou <strong>chantier participatif</strong>. Cela nous aide à
+              vous orienter directement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carte -->
+    <div id="carte" class="mt-14 max-w-5xl mx-auto scroll-mt-24">
+      <h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500 mb-3">
+        Nous situer — Puget-sur-Durance (84)
+      </h3>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000!2d5.256808077167751!3d43.75539684581364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12ca1b7a97c9d6ad%3A0x39f4530edb3450da!2s361%20Chem.%20des%20Basses%20Beaumes%2C%2084360%20Puget!5e1!3m2!1sfr!2sfr!4v1772304853928!5m2!1sfr!2sfr"
+        width="100%"
+        height="300"
+        class="rounded-xl border border-stone-200"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Localisation de l'association Canopée à Puget-sur-Durance"></iframe>
+    </div>
+
+    <!-- FAQ -->
+    <div class="mt-16 mb-12 max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-[#2D5016] text-center mb-8">Questions fréquentes</h2>
+      <div class="space-y-3">
+        {
+          faqs.map((f) => (
+            <details class="group rounded-xl border border-stone-200 bg-white p-5 open:shadow-sm">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold text-stone-800 list-none">
+                {f.q}
+                <svg class="w-5 h-5 shrink-0 text-[#C4881A] transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              </summary>
+              <p class="mt-3 text-stone-600 leading-relaxed text-sm" set:html={f.r} />
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</Layout>

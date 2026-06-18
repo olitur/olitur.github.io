@@ -1,0 +1,30 @@
+---
+interface Item {
+  label: string;
+  href?: string;
+}
+
+const { items } = Astro.props as { items: Item[] };
+---
+
+<nav aria-label="Fil d'Ariane" class="text-sm text-stone-500">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {
+      items.map((it, i) => {
+        const dernier = i === items.length - 1;
+        return (
+          <li class="flex items-center gap-1.5">
+            {it.href && !dernier ? (
+              <a href={it.href} class="hover:text-[#2D5016] underline underline-offset-2">
+                {it.label}
+              </a>
+            ) : (
+              <span class:list={[dernier ? "text-stone-700 font-medium" : ""]}>{it.label}</span>
+            )}
+            {!dernier && <span class="text-stone-300">›</span>}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

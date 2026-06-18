@@ -1,0 +1,67 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import { Icon } from "astro-icon/components";
+
+const sections = [
+  {
+    titre: "Blog",
+    desc: "Actualités de l'association, retours de terrain et techniques : les articles de Canopée, du maraîchage à la vie du projet.",
+    icon: "uil:book-open",
+    href: "/blog",
+    cta: "Lire le blog",
+  },
+  {
+    titre: "Documents",
+    desc: "Le socle documentaire des activités de Canopée : statuts, dossier des jardins, guide et fiches techniques. Autant de ressources pour s'informer et développer son autonomie selon les trois axes de l'association.",
+    icon: "uil:file-alt",
+    href: "/documents",
+    cta: "Consulter les documents",
+  },
+  {
+    titre: "Projets",
+    desc: "L'état d'avancement de tous les chantiers de l'association : montant estimé, échéance et santé planning, axe par axe. Une vue d'ensemble de ce que Canopée construit, en cours comme à venir.",
+    icon: "uil:chart-growth",
+    href: "/ressources/projets",
+    cta: "Voir les projets",
+  },
+];
+---
+
+<Layout
+  title="Ressources — Canopée"
+  description="Le blog et la documentation de l'association Canopée : actualités, statuts, guide et fiches techniques pour développer son autonomie.">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Ressources" }]} />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">Ressources & blog</Fragment>
+      <Fragment slot="desc">
+        Le blog de l'association et son socle documentaire : tout pour cultiver,
+        s'équiper et comprendre les trois axes de Canopée.
+      </Fragment>
+    </Sectionhead>
+
+    <div class="max-w-4xl mx-auto mt-12 grid gap-8 sm:grid-cols-2">
+      {
+        sections.map((s) => (
+          <a
+            href={s.href}
+            class="flex flex-col bg-white border border-stone-200 rounded-3xl p-8 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+            <div class="w-14 h-14 rounded-full bg-emerald-50 text-[#2D5016] flex items-center justify-center mb-4 group-hover:bg-[#2D5016] group-hover:text-white transition-colors">
+              <Icon name={s.icon} class="w-7 h-7" />
+            </div>
+            <h2 class="text-xl font-bold text-stone-800 group-hover:text-[#2D5016]">
+              {s.titre}
+            </h2>
+            <p class="mt-2 text-stone-500 flex-1 text-sm leading-relaxed">{s.desc}</p>
+            <span class="mt-4 font-medium text-[#2D5016]">{s.cta} →</span>
+          </a>
+        ))
+      }
+    </div>
+  </Container>
+</Layout>

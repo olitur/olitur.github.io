@@ -1,0 +1,169 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  /**
+   * Nom du dossier de la galerie. Deux emplacements possibles :
+   *  - pages : src/assets/galeries/<dossier>/…
+   *  - article de blog (post = 1 dossier) : src/content/blog/<dossier>/images/…
+   * Le composant cherche dans les deux. L'image de couverture (cover.*) est ignorée.
+   */
+  dossier: string;
+  /** Titre optionnel affiché au-dessus (le bloc entier est masqué si le dossier est vide). */
+  titre?: string;
+  /** Légendes par nom de fichier (ex. { "01-vue.jpg": "Vue d'ensemble" }) ; sinon dérivées du nom. */
+  legendes?: Record<string, string>;
+  /** Texte alternatif de repli (préfixe). */
+  alt?: string;
+  /** Format du cadre (CSS aspect-ratio), ex. "16/10" (défaut, paysage) ou "3/4" (portrait). */
+  ratio?: string;
+  /** Largeur maximale du carrousel (centré), ex. "30rem" — utile pour des photos portrait. */
+  largeur?: string;
+}
+
+const { dossier, titre, legendes = {}, alt = "", ratio = "16/10", largeur } = Astro.props;
+
+// astro:assets optimise (→ webp) les images importées via ce glob.
+// Deux racines : galeries des pages + images co-localisées des posts de blog.
+const fichiers = import.meta.glob<{ default: ImageMetadata }>(
+  [
+    "/src/assets/galeries/**/*.{jpg,jpeg,png,webp,avif}",
+    "/src/content/blog/**/*.{jpg,jpeg,png,webp,avif}",
+  ],
+  { eager: true },
+);
+
+const nomFichier = (cle: string) => cle.slice(cle.lastIndexOf("/") + 1);
+
+const legende = (nom: string) =>
+  legendes[nom] ??
+  nom
+    .replace(/\.[^.]+$/, "")
+    .replace(/^\d+[-_]?/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+
+const images = Object.entries(fichiers)
+  .filter(([cle]) => cle.includes(`/${dossier}/`))
+  .filter(([cle]) => !/\/cover\.[^/]+$/i.test(cle))
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([cle, mod]) => {
+    const nom = nomFichier(cle);
+    return { src: mod.default, nom, legende: legende(nom) };
+  });
+
+const uid = `car-${dossier.replace(/[^a-z0-9]/gi, "")}-${Math.random().toString(36).slice(2, 7)}`;
+const plusieurs = images.length > 1;
+---
+
+{
+  images.length > 0 && (
+    <figure class="not-prose my-8">
+      {titre && <h2 class="font-semibold text-stone-700 mb-3">{titre}</h2>}
+
+      <div
+        id={uid}
+        data-carousel
+        class="group relative mx-auto overflow-hidden rounded-3xl border border-stone-200 shadow-sm"
+        style={largeur ? `max-width:${largeur}` : undefined}>
+        <div
+          data-track
+          class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {images.map((img, i) => (
+            <div class="relative shrink-0 basis-full snap-center">
+              <Image
+                src={img.src}
+                alt={img.legende || `${alt} ${i + 1}`.trim()}
+                width={1280}
+                loading={i === 0 ? "eager" : "lazy"}
+                class="w-full object-cover"
+                style={`aspect-ratio:${ratio}`}
+              />
+              {img.legende && (
+                <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-5 pt-10 pb-4 text-sm text-white">
+                  {img.legende}
+                </figcaption>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {plusieurs && (
+          <>
+            <button
+              type="button"
+              data-prev
+              aria-label="Image précédente"
+              class="absolute left-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-stone-800 shadow-sm backdrop-blur-sm transition hover:bg-white opacity-0 group-hover:opacity-100 focus-visible:opacity-100">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              data-next
+              aria-label="Image suivante"
+              class="absolute right-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-stone-800 shadow-sm backdrop-blur-sm transition hover:bg-white opacity-0 group-hover:opacity-100 focus-visible:opacity-100">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <div data-dots class="absolute inset-x-0 bottom-3 flex justify-center gap-2">
+              {images.map((_, i) => (
+                <button
+                  type="button"
+                  data-dot
+                  aria-label={`Aller à l'image ${i + 1}`}
+                  class="h-2 w-2 rounded-full bg-white/60 shadow-sm transition-all data-[active]:w-5 data-[active]:bg-white"
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </figure>
+  )
+}
+
+<script>
+  function initCarousels() {
+    document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+      if (root.dataset.ready) return;
+      root.dataset.ready = "1";
+
+      const track = root.querySelector<HTMLElement>("[data-track]");
+      if (!track) return;
+      const slides = Array.from(track.children) as HTMLElement[];
+      const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-dot]"));
+      if (slides.length < 2) return;
+
+      const allerA = (i: number) => {
+        const cible = slides[Math.max(0, Math.min(slides.length - 1, i))];
+        track.scrollTo({ left: cible.offsetLeft, behavior: "smooth" });
+      };
+      const indexCourant = () =>
+        Math.round(track.scrollLeft / track.clientWidth);
+
+      root.querySelector("[data-prev]")?.addEventListener("click", () => allerA(indexCourant() - 1));
+      root.querySelector("[data-next]")?.addEventListener("click", () => allerA(indexCourant() + 1));
+      dots.forEach((d, i) => d.addEventListener("click", () => allerA(i)));
+
+      const majDots = () => {
+        const i = indexCourant();
+        dots.forEach((d, k) =>
+          k === i ? d.setAttribute("data-active", "") : d.removeAttribute("data-active"),
+        );
+      };
+      majDots();
+      let t: number | undefined;
+      track.addEventListener("scroll", () => {
+        if (t) cancelAnimationFrame(t);
+        t = requestAnimationFrame(majDots);
+      });
+    });
+  }
+
+  initCarousels();
+  document.addEventListener("astro:after-swap", initCarousels);
+</script>

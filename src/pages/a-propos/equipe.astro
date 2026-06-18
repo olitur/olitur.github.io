@@ -1,0 +1,104 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import { Image } from "astro:assets";
+import photoOlt from "@/assets/team/o-turlier.jpg";
+import photoBrigitte from "@/assets/team/brigitte-karm.svg";
+import photoSalim from "@/assets/team/salim-rhoubi.svg";
+
+const membres = [
+  {
+    nom: "Olivier Turlier",
+    role: "Président-fondateur",
+    photo: photoOlt,
+    bio: [
+      "J'ai lancé Canopée il y a longtemps, dans l'espoir de partager des informations importantes concernant les thèmes de prédilection qui m'animent toujours aujourd'hui. La possibilité d'utiliser des terrains agricoles a relancé l'expérimentation de résilience alimentaire.",
+      "J'espère enfin pouvoir apporter des réponses concrètes et les échanger avec les membres de Canopée.",
+    ],
+    domaines: ["Résilience alimentaire", "Autonomie énergétique", "Habitat bioclimatique"],
+  },
+  {
+    nom: "Brigitte Karm",
+    role: "Secrétaire",
+    photo: photoBrigitte,
+    bio: [
+      "Secrétaire de l'association, Brigitte veille à la vie associative : comptes rendus, registre des délibérations et lien entre les membres.",
+      "Bio à préciser — texte provisoire en attendant sa présentation.",
+    ],
+    domaines: ["Communication","Vie associative", "Résilience alimentaire"],
+  },
+  {
+    nom: "Salim Roubhi",
+    role: "Trésorier",
+    photo: photoSalim,
+    bio: [
+      "Trésorier de Canopée, Salim suit le budget de l'association et l'équilibre des investissements collectifs : matériel mutualisé, terrains et projets.",
+      "Bio à préciser — texte provisoire en attendant sa présentation.",
+    ],
+    domaines: ["Gestion & budget", "Autonomie énergétique"],
+  },
+];
+---
+
+<Layout
+  title="L'équipe — Canopée"
+  description="Les membres de l'association Canopée — autour d'Olivier Turlier, président-fondateur, un collectif au service de l'autonomie en Luberon.">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "À propos", href: "/a-propos" }, { label: "L'équipe" }]} />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">Les membres</Fragment>
+      <Fragment slot="desc">Celles et ceux qui font vivre Canopée au quotidien.</Fragment>
+    </Sectionhead>
+
+    <div class="mt-16 max-w-4xl mx-auto space-y-10">
+      {
+        membres.map((m) => (
+          <article class="grid sm:grid-cols-[200px_1fr] gap-8 bg-white border border-stone-200 rounded-2xl p-6 sm:p-8">
+            <Image
+              src={m.photo}
+              alt={`Portrait de ${m.nom}`}
+              widths={[200, 400]}
+              sizes="200px"
+              class="w-full sm:w-[200px] h-56 sm:h-60 object-cover rounded-xl shadow-sm"
+            />
+            <div>
+              <h2 class="text-2xl font-bold text-stone-800">{m.nom}</h2>
+              <p class="text-[#C4881A] font-medium">{m.role}</p>
+              <div class="mt-4 space-y-3 text-stone-600 leading-relaxed">
+                {m.bio.map((p) => (
+                  <p>{p}</p>
+                ))}
+              </div>
+              <div class="mt-5 flex flex-wrap gap-2">
+                {m.domaines.map((d) => (
+                  <span class="text-xs font-medium bg-[#F1F4EE] text-[#2D5016] px-3 py-1 rounded-full border border-emerald-100">
+                    {d}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Rejoindre l'équipe -->
+    <section class="my-16 max-w-4xl mx-auto rounded-2xl border border-stone-200 bg-white p-8 text-center">
+      <h2 class="text-2xl font-bold text-[#2D5016]">Rejoindre l'équipe</h2>
+      <p class="mt-3 text-stone-600 max-w-2xl mx-auto leading-relaxed">
+        Canopée grandit avec ses membres. Jardiniers, bricoleurs, passionnés d'énergie ou de
+        construction : il y a une place pour chacun, des chantiers participatifs aux responsabilités
+        associatives.
+      </p>
+      <div class="mt-6">
+        <a href="/nous-rejoindre" class="inline-block bg-[#2D5016] hover:bg-[#3a6a1e] text-white font-semibold px-8 py-3 rounded-lg transition">
+          Nous rejoindre
+        </a>
+      </div>
+    </section>
+  </Container>
+</Layout>

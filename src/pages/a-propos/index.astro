@@ -1,0 +1,225 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import heroLuberon from "@/assets/hero-luberon.webp";
+
+const valeurs = [
+  {
+    id: "bio-vivrier",
+    titre: "Bio & vivrier",
+    icon: "lucide:wheat",
+    paras: [
+      "Produire pour nourrir sa famille, pas pour vendre. Canopée cultive selon des <strong>méthodes douces</strong> — semences paysannes, travail minimal du sol, zéro intrant chimique — où la connaissance agronomique remplace la chimie et la mécanisation lourde.",
+      "Cette exigence va de pair avec la <strong>sobriété</strong> : valoriser les ressources gratuites du site (élagage, purins, biochar), mutualiser l'outillage et préférer des techniques simples, réparables et peu coûteuses. La boussole n'est pas la performance commerciale, mais l'autosuffisance alimentaire à coût d'entrée minimal.",
+    ],
+  },
+  {
+    id: "partage",
+    titre: "Partage",
+    icon: "lucide:users",
+    paras: [
+      "Outils, eau, compétences et récoltes : tout ce qui peut être mis en commun l'est. Canopée met à disposition de ses adhérents des <strong>terres cultivables</strong> et un <strong>matériel mutualisé</strong> — ce n'est pas un service, c'est un collectif qui met en commun.",
+      "Le partage est aussi celui du savoir-faire : l'autonomie s'apprend en faisant. <strong>Formations gratuites</strong> pour les adhérents et <strong>chantiers participatifs</strong> ouverts à tous transmettent les gestes, dans une logique d'entraide et d'éducation populaire.",
+    ],
+  },
+  {
+    id: "autonomie",
+    titre: "Autonomie",
+    icon: "lucide:compass",
+    paras: [
+      "Se nourrir, s'éclairer et s'abriter par soi-même : reprendre la main sur les besoins essentiels, à l'échelle d'un jardin comme d'un territoire. <strong>Alimentation, énergie, habitat</strong> — les trois axes de Canopée construisent ensemble une indépendance progressive.",
+      "Cette autonomie est indissociable de la <strong>résilience</strong> : un territoire qui produit l'essentiel encaisse mieux les chocs, qu'ils soient climatiques, énergétiques ou économiques.",
+    ],
+  },
+  {
+    id: "territoire",
+    titre: "Territoire",
+    icon: "lucide:map-pin",
+    paras: [
+      "Canopée est ancrée dans le <strong>Luberon</strong>, en plaine de Durance (Vaucluse). Ce territoire dicte ses pratiques : attention aux <strong>ressources en eau</strong>, irrigation collective raisonnée, adaptation à un climat méditerranéen qui s'assèche.",
+      "Travailler avec le territoire, c'est composer avec les pratiques locales, les filières existantes et la communauté qui l'habite — pour enraciner l'autonomie dans un lieu, plutôt que hors-sol.",
+    ],
+  },
+];
+
+const axes = [
+  {
+    titre: "Résilience alimentaire",
+    desc: "Maraîchage bio-intensif, céréales anciennes et amendements produits sur site.",
+    href: "/resilience-alimentaire",
+  },
+  {
+    titre: "Autonomie énergétique",
+    desc: "Huile végétale carburant, gazogène, éolienne Piggott, four solaire.",
+    href: "/autonomie-energetique",
+  },
+  {
+    titre: "Construction bioclimatique",
+    desc: "Paille porteuse, pisé, habitat semi-enterré et autoconstruction accompagnée.",
+    href: "/construction",
+  },
+];
+
+const reperes = [
+  ["3", "axes de développement"],
+  ["4", "terrains (A → D)"],
+  ["350 & 700", "m² par parcelle"],
+  ["Luberon", "Vaucluse (84)"],
+];
+
+// Couleurs de chaque axe (mêmes teintes que les en-têtes de page et les cartes du hero).
+const axeStyle: Record<string, { from: string; to: string; accent: string }> = {
+  "/resilience-alimentaire": { from: "from-[#2D5016]", to: "to-[#3a6a1e]", accent: "text-[#2D5016]" },
+  "/autonomie-energetique": { from: "from-[#C4881A]", to: "to-[#8a5a12]", accent: "text-[#8a5a12]" },
+  "/construction": { from: "from-[#5d4037]", to: "to-[#4A5568]", accent: "text-[#5d4037]" },
+};
+---
+
+<Layout
+  title="À propos — Canopée"
+  description="L'association Canopée : agriculture partagée, éducation populaire et autonomie alimentaire, énergétique et constructive au cœur du Luberon.">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "À propos" }]} />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">L'association Canopée</Fragment>
+      <Fragment slot="desc">Agriculture partagée, éducation populaire et autonomie en Luberon.</Fragment>
+    </Sectionhead>
+
+    <!-- Notre raison d'être -->
+    <div class="mt-16 grid lg:grid-cols-2 gap-10 items-center max-w-5xl mx-auto">
+      <div class="space-y-4 text-stone-600 leading-relaxed">
+        <h2 class="text-2xl font-bold text-[#2D5016]">Notre raison d'être</h2>
+        <p>
+          Canopée est une association loi 1901 qui œuvre à la résilience d'un territoire — le
+          <strong>Luberon</strong>, en Vaucluse — par trois leviers complémentaires : produire sa
+          nourriture, son énergie et son habitat, sobrement et en commun.
+        </p>
+        <p>
+          Née de la conviction que l'autonomie s'apprend en faisant, l'association met à disposition
+          de ses adhérents des <strong>terres cultivables</strong>, du <strong>matériel mutualisé</strong>
+          et un savoir-faire transmis lors de formations et de chantiers participatifs.
+        </p>
+        <p>
+          Canopée ne vise pas la performance commerciale mais l'<strong>autosuffisance à coût d'entrée
+          minimal</strong> : valoriser les ressources gratuites du site, mutualiser l'outillage et
+          partager les connaissances.
+        </p>
+      </div>
+      <Image
+        src={heroLuberon}
+        alt="Le Luberon — territoire de l'association Canopée"
+        widths={[480, 800]}
+        sizes="(max-width: 1024px) 100vw, 480px"
+        class="rounded-2xl shadow-sm w-full h-64 lg:h-80 object-cover"
+      />
+    </div>
+
+    <!-- Repères -->
+    <div class="mt-16 max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {
+        reperes.map(([chiffre, label]) => (
+          <div class="bg-white border border-stone-200 rounded-xl p-5 text-center">
+            <div class="text-2xl font-bold text-[#2D5016]">{chiffre}</div>
+            <div class="mt-1 text-sm text-stone-500">{label}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Ce qui nous guide -->
+    <div class="mt-20 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold text-[#2D5016] text-center">Ce qui nous guide</h2>
+      <div class="mt-10 space-y-6">
+        {
+          valeurs.map((v, i) => (
+            <section
+              id={v.id}
+              class="scroll-mt-24 bg-white border border-stone-200 rounded-3xl p-6 sm:p-8 shadow-sm flex gap-5 sm:gap-7">
+              <div class="shrink-0 flex flex-col items-center gap-3">
+                <div class="w-14 h-14 rounded-full bg-emerald-50 text-[#2D5016] flex items-center justify-center">
+                  <Icon name={v.icon} class="w-7 h-7" />
+                </div>
+                <span class="text-sm font-bold text-stone-300 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-stone-800">{v.titre}</h3>
+                {v.paras.map((p) => (
+                  <p class="mt-2 text-stone-600 leading-relaxed" set:html={p} />
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Nos trois axes -->
+    <div class="mt-20 max-w-5xl mx-auto">
+      <h2 class="text-2xl font-bold text-[#2D5016] text-center">Nos trois axes</h2>
+      <div class="mt-8 grid sm:grid-cols-3 gap-6">
+        {
+          axes.map((a) => (
+            <a
+              href={a.href}
+              class="group relative overflow-hidden flex flex-col bg-white border border-stone-200 rounded-3xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div
+                class:list={[
+                  "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-20",
+                  axeStyle[a.href].from,
+                  axeStyle[a.href].to,
+                ]}
+                aria-hidden="true"
+              />
+              <div class="relative flex flex-col flex-1">
+                <h3 class="font-semibold text-stone-800">{a.titre}</h3>
+                <p class="mt-2 text-sm text-stone-500 flex-1 leading-relaxed">{a.desc}</p>
+                <span class:list={["mt-4 text-sm font-medium", axeStyle[a.href].accent]}>
+                  En savoir plus →
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- L'équipe -->
+    <div class="mt-20 max-w-5xl mx-auto rounded-2xl border border-stone-200 bg-white p-8 sm:flex sm:items-center sm:justify-between gap-6 text-center sm:text-left">
+      <div>
+        <h2 class="text-2xl font-bold text-[#2D5016]">Qui anime Canopée ?</h2>
+        <p class="mt-2 text-stone-600 max-w-xl leading-relaxed">
+          Derrière l'association, des membres engagés autour de son président-fondateur.
+          Faites connaissance avec l'équipe.
+        </p>
+      </div>
+      <a href="/a-propos/equipe" class="shrink-0 mt-4 sm:mt-0 inline-block border-2 border-[#2D5016] text-[#2D5016] hover:bg-[#2D5016] hover:text-white font-semibold px-6 py-3 rounded-lg transition">
+        Rencontrer l'équipe →
+      </a>
+    </div>
+
+    <!-- CTA -->
+    <section class="my-20 bg-[#2D5016] rounded-[2rem] px-8 py-14 text-center max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-white">Rejoindre l'aventure</h2>
+      <p class="mt-3 text-emerald-100 max-w-xl mx-auto leading-relaxed">
+        Adhérer, cultiver une parcelle, suivre une formation ou prêter main-forte sur un chantier :
+        il y a mille façons de faire partie de Canopée.
+      </p>
+      <div class="mt-7 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/nous-rejoindre" class="inline-block bg-[#C4881A] hover:bg-[#b37716] text-white font-semibold px-8 py-4 rounded-lg transition">
+          Devenir adhérent
+        </a>
+        <a href="/nous-rejoindre#contact" class="inline-block border-2 border-white/40 hover:border-white text-white font-semibold px-8 py-4 rounded-lg transition">
+          Nous contacter
+        </a>
+      </div>
+    </section>
+  </Container>
+</Layout>

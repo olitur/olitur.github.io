@@ -1,0 +1,85 @@
+---
+import { SEO } from "astro-seo";
+import Footer from "@/components/footer.astro";
+import Navbar from "@/components/navbar/navbar.astro";
+import "@fontsource-variable/inter/index.css";
+import "@fontsource-variable/bricolage-grotesque";
+import "../styles/global.css";
+import faviconIco from "@/assets/canopee_ico.ico?url";
+
+export interface Props {
+  title: string;
+  description?: string;
+  navOverlay?: boolean;
+  footerOverlay?: boolean;
+  /** Motif de fond thématique (nom du SVG dans /public/patterns/, sans extension).
+      Réservé aux 3 pages d'axe ; les autres pages restent sur crème uni. */
+  texture?: string;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+
+const resolvedImageWithDomain = new URL(
+  "/opengraph.jpg",
+  Astro.site
+).toString();
+
+const {
+  title,
+  description = "Association Canopée — Résilience alimentaire, autonomie énergétique et habitat bioclimatique : formations, location de parcelles et chantiers participatifs au cœur du Luberon.",
+  navOverlay = false,
+  footerOverlay = false,
+  texture,
+} = Astro.props;
+
+const makeTitle = title
+  ? title + " | " + "Canopée"
+  : "Canopée — Agriculture partagée et autonomie en Luberon";
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href={faviconIco} />
+    <meta name="generator" content={Astro.generator} />
+    <SEO
+      title={makeTitle}
+      description={description}
+      canonical={canonicalURL}
+      openGraph={{
+        basic: {
+          url: canonicalURL,
+          type: "website",
+          title: makeTitle,
+          image: resolvedImageWithDomain,
+        },
+        image: {
+          alt: "Canopée — Agriculture partagée en Luberon",
+        },
+      }}
+    />
+  </head>
+  <body>
+    {
+      texture && (
+        <div
+          class="pointer-events-none fixed inset-0 -z-10"
+          style={`background-image:url(/patterns/${texture}.svg);background-repeat:repeat;background-size:190px 190px;`}
+          aria-hidden="true"
+        />
+      )
+    }
+    <Navbar overlay={navOverlay} />
+    <slot />
+    <Footer overlay={footerOverlay} />
+    <style is:global>
+      /* Improve Page speed */
+      /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
+      img {
+        content-visibility: auto;
+      }
+    </style>
+  </body>
+</html>

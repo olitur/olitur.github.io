@@ -1,0 +1,109 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+
+export async function getStaticPaths() {
+  const formations = await getCollection("formations");
+  return formations.map((f) => ({
+    params: { id: f.id },
+    props: { formation: f },
+  }));
+}
+
+const { formation } = Astro.props;
+const { Content } = await render(formation);
+
+const dateObj = new Date(formation.data.date);
+const dateStr = dateObj.toLocaleDateString("fr-FR", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const complet = formation.data.placesRestantes === 0;
+---
+
+<Layout title={`${formation.data.titre} — Canopée`}>
+  <Container>
+    <div class="max-w-2xl mx-auto mt-14">
+      <a href="/formations" class="text-sm text-stone-500 hover:text-[#2D5016]">← Toutes les formations</a>
+
+      <div class="mt-4">
+        <span class="text-sm text-[#C4881A] font-medium uppercase tracking-wider">
+          {formation.data.categorie}
+        </span>
+        <h1 class="text-3xl font-bold text-stone-800 mt-1">{formation.data.titre}</h1>
+        <p class="text-stone-500 mt-1">Animé par {formation.data.animateur}</p>
+      </div>
+
+      <dl class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Date</dt>
+          <dd class="mt-1 font-semibold text-stone-700 text-sm capitalize">{dateStr}</dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Durée</dt>
+          <dd class="mt-1 font-semibold text-stone-700 text-sm">{formation.data.duree}</dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Niveau</dt>
+          <dd class="mt-1 font-semibold text-stone-700 text-sm">{formation.data.niveau}</dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Tarif</dt>
+          <dd class="mt-1 font-semibold text-stone-700 text-sm">{formation.data.prix}</dd>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-4">
+          <dt class="text-xs text-stone-400 uppercase tracking-wide">Places restantes</dt>
+          <dd class:list={["mt-1 font-semibold text-sm", complet ? "text-red-600" : "text-emerald-700"]}>
+            {complet ? "Complet" : `${formation.data.placesRestantes} / ${formation.data.places}`}
+          </dd>
+        </div>
+      </dl>
+
+      {
+        formation.data.programme && formation.data.programme.length > 0 && (
+          <div class="mt-8">
+            <h2 class="font-semibold text-stone-700 text-lg mb-3">Programme</h2>
+            <ol class="space-y-2">
+              {formation.data.programme.map((etape, i) => (
+                <li class="flex gap-3 text-stone-600 text-sm">
+                  <span class="shrink-0 w-6 h-6 rounded-full bg-[#2D5016] text-white text-xs flex items-center justify-center font-bold">
+                    {i + 1}
+                  </span>
+                  {etape}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )
+      }
+
+      <div class="prose prose-stone mt-8 max-w-none">
+        <Content />
+      </div>
+
+      <div class="mt-10 p-6 bg-white border border-stone-200 rounded-3xl shadow-sm">
+        {
+          complet ? (
+            <p class="text-stone-700 font-medium">
+              Cette formation est complète.{" "}
+              <a href="/nous-rejoindre#contact" class="text-[#2D5016] underline">
+                Inscrivez-vous sur liste d'attente.
+              </a>
+            </p>
+          ) : (
+            <p class="text-stone-700 font-medium">
+              Pour s'inscrire :{" "}
+              <a href="/nous-rejoindre#contact" class="text-[#2D5016] underline">
+                formulaire de contact
+              </a>{" "}
+              en précisant le nom de la formation.
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </Container>
+</Layout>

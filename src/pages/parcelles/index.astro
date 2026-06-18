@@ -1,0 +1,93 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import ParcelleType from "@/components/parcelletype.astro";
+import AtoutsSite from "@/components/atouts-site.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import { parcelles as csvParcelles } from "@/data/parcelles";
+
+const fiches = await getCollection("parcelles");
+fiches.sort((a, b) => a.data.titre.localeCompare(b.data.titre));
+
+const statut = (id: string) => {
+  const row = csvParcelles.find((p) => p.slug === id);
+  return row ? row.dispo : true;
+};
+---
+
+<Layout title="Parcelles à louer — Canopée">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Parcelles" }]} />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">Les parcelles</Fragment>
+      <Fragment slot="desc">
+        Deux types de parcelles selon l'état du terrain. La surface (350 ou 700 m²) dépend du terrain ;
+        elle ne change pas la nature de la parcelle, seulement le loyer total.
+      </Fragment>
+    </Sectionhead>
+
+    <div class="mt-10 max-w-3xl mx-auto bg-amber-50 border border-amber-200 rounded-lg p-5 text-sm text-amber-800">
+      <strong>Conditions d'accès</strong> — Les parcelles sont réservées aux membres à jour de cotisation.
+      <a href="/nous-rejoindre" class="underline ml-1 hover:text-[#2D5016]">Devenir adhérent</a>
+    </div>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+      <ParcelleType cle="equipee" id="type-equipee" />
+      <ParcelleType cle="friche" id="type-friche" />
+    </div>
+
+    <div class="mt-12 max-w-4xl mx-auto">
+      <AtoutsSite />
+    </div>
+
+    <p class="mt-8 text-center text-stone-600">
+      Pour voir les parcelles réellement disponibles, terrain par terrain :
+      <a href="/terrains" class="text-[#2D5016] underline ml-1">consulter la carte des terrains →</a>
+    </p>
+
+    {
+      fiches.length > 0 && (
+        <div class="mt-12 max-w-3xl mx-auto">
+          <h2 class="font-semibold text-stone-700 mb-4">Parcelles avec fiche détaillée</h2>
+          <ul class="grid gap-6">
+            {fiches.map((parcelle) => {
+              const dispo = statut(parcelle.id);
+              return (
+                <li>
+                  <a href={`/parcelles/${parcelle.id}`} class="block group">
+                    <div class="bg-white border border-stone-200 rounded-3xl p-6 shadow-sm hover:border-[#2D5016] hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                      <div class="flex items-start justify-between gap-4 flex-wrap">
+                        <div>
+                          <h3 class="text-xl font-semibold text-stone-800 group-hover:text-[#2D5016]">
+                            {parcelle.data.titre}
+                          </h3>
+                          <p class="text-sm text-stone-500 mt-1">{parcelle.data.localisation}</p>
+                        </div>
+                        <span
+                          class:list={[
+                            "shrink-0 px-3 py-1 rounded-full text-sm font-medium",
+                            dispo ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800",
+                          ]}>
+                          {dispo ? "Disponible" : "Louée"}
+                        </span>
+                      </div>
+                      <p class="mt-3 text-stone-600 text-sm">{parcelle.data.description}</p>
+                      <div class="mt-4 flex gap-6 text-sm text-stone-500">
+                        <span>📐 {parcelle.data.surface}</span>
+                        <span>💶 {parcelle.data.prix}</span>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )
+    }
+  </Container>
+</Layout>

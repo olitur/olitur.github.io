@@ -1,0 +1,30 @@
+# build output
+dist/
+docs/
+.output/
+.astro
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# Fichiers de travail Claude Code
+CLAUDE.md
+HISTORIQUE_CLAUDE.md
+.claude/
+
+# Capture d'écran égarée (à supprimer de public/)
+/public/2026-06-18 16_12_19-Double Commander 1.1.24~721.png

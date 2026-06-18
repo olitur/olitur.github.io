@@ -1,0 +1,205 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import ParcelleType from "@/components/parcelletype.astro";
+import AtoutsSite from "@/components/atouts-site.astro";
+import Carousel from "@/components/carousel.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import { parcellesParTerrain } from "@/data/parcelles";
+
+export async function getStaticPaths() {
+  const terrains = await getCollection("terrains");
+  return terrains.map((terrain) => ({
+    params: { id: terrain.id },
+    props: { terrain },
+  }));
+}
+
+const { terrain } = Astro.props;
+const data = terrain.data;
+const { Content } = await render(terrain);
+
+const parcellesT = parcellesParTerrain(data.lettre);
+const [nLat, nLon] = data.extent.nord.split(",").map((s) => parseFloat(s.trim()));
+const [sLat, sLon] = data.extent.sud.split(",").map((s) => parseFloat(s.trim()));
+const nb = parcellesT.length;
+
+const parcMarkers = parcellesT.map((p, i) => {
+  const frac = nb > 1 ? (i + 0.5) / nb : 0.5;
+  return {
+    ref: p.ref,
+    dispo: p.dispo,
+    slug: p.slug ?? null,
+    surface: p.surface,
+    prixAnnuel: p.prixAnnuel,
+    lat: p.lat ?? nLat + (sLat - nLat) * frac,
+    lon: p.lon ?? nLon + (sLon - nLon) * frac,
+  };
+});
+
+const nbLibres = parcellesT.filter((p) => p.dispo).length;
+---
+
+<Layout title={`Terrain ${data.lettre} — Canopée`}>
+  <Container>
+    <div class="max-w-3xl mx-auto mt-14">
+      <Breadcrumb
+        items={[
+          { label: "Terrains", href: "/terrains" },
+          { label: `Terrain ${data.lettre}` },
+        ]}
+      />
+
+      <div class="flex items-start justify-between gap-4 flex-wrap mt-4">
+        <h1 class="text-3xl font-bold text-stone-800">Terrain {data.lettre} — {data.nom}</h1>
+        <span
+          class:list={[
+            "px-3 py-1 rounded-full text-sm font-medium",
+            data.etat === "travaillée"
+              ? "bg-emerald-100 text-emerald-800"
+              : "bg-amber-100 text-amber-800",
+          ]}>
+          {data.etat === "travaillée" ? "Prêt à cultiver" : "En friche"}
+        </span>
+      </div>
+
+      <p class="text-stone-500 mt-1">{data.lieu}</p>
+
+      <div class="mt-6">
+        <h2 class="font-semibold text-stone-700 mb-2">
+          Les {nb} parcelles du terrain — {nbLibres} disponible{nbLibres > 1 ? "s" : ""}
+        </h2>
+        <div
+          id="carte-parcelles"
+          data-markers={JSON.stringify(parcMarkers)}
+          data-center={data.coordonnees}
+          class="rounded-3xl border border-stone-200 shadow-sm overflow-hidden"
+          style="height: 420px;">
+        </div>
+        <div class="mt-3 flex gap-6 text-xs text-stone-500">
+          <span class="flex items-center gap-1">
+            <span class="inline-block w-3 h-3 rounded-full bg-emerald-500" /> Disponible
+          </span>
+          <span class="flex items-center gap-1">
+            <span class="inline-block w-3 h-3 rounded-full bg-red-600" /> Louée
+          </span>
+          <span>Positions indicatives le long de la bande — cliquez un point pour la parcelle.</span>
+        </div>
+      </div>
+
+      <div class="prose prose-stone mt-8 max-w-none">
+        <Content />
+      </div>
+
+      <Carousel dossier={`terrain-${data.lettre.toLowerCase()}`} titre="Le terrain en images" />
+
+      <div class="mt-10">
+        <h2 class="font-semibold text-stone-700 mb-3">La parcelle type de ce terrain</h2>
+        <ParcelleType cle={data.typeParcelle} href={`/parcelles#type-${data.typeParcelle}`} />
+      </div>
+
+      {
+        data.atoutsCommuns && (
+          <div class="mt-10">
+            <AtoutsSite />
+          </div>
+        )
+      }
+
+      <div class="mt-10 p-6 bg-white border border-stone-200 rounded-3xl shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-stone-700 font-medium">
+          {
+            data.ouvert
+              ? "Une parcelle de ce terrain vous intéresse ?"
+              : "Ce terrain est en cours d'aménagement."
+          }
+        </p>
+        <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+          <a href="/nous-rejoindre#contact" class="text-[#2D5016] underline">Faire une demande</a>
+          <a href="/nous-rejoindre" class="text-[#2D5016] underline">Devenir adhérent</a>
+          <a href="/documents" class="text-[#2D5016] underline">Documentation Canopée</a>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>
+
+<script>
+  import L from "leaflet";
+  import "leaflet/dist/leaflet.css";
+
+  function initCarteParcelles() {
+    const el = document.getElementById("carte-parcelles") as
+      | (HTMLElement & { _leafletMap?: L.Map })
+      | null;
+    if (!el || el._leafletMap) return;
+
+    const markers = JSON.parse(el.dataset.markers || "[]") as Array<{
+      ref: string;
+      dispo: boolean;
+      slug: string | null;
+      surface: string;
+      prixAnnuel: string;
+      lat: number;
+      lon: number;
+    }>;
+    const center = (el.dataset.center || "43.75, 5.26")
+      .split(",")
+      .map((s) => parseFloat(s.trim())) as [number, number];
+
+    const map = L.map(el, { scrollWheelZoom: false }).setView(center, 18);
+    el._leafletMap = map;
+
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      { attribution: "Tuiles © Esri — World Imagery", maxZoom: 19 }
+    ).addTo(map);
+
+    markers.forEach((m) => {
+      const couleur = m.dispo ? "#10b981" : "#dc2626";
+      const lien = m.slug
+        ? '<br><a href="/parcelles/' +
+          m.slug +
+          '" style="color:#2D5016;text-decoration:underline">Voir la fiche →</a>'
+        : "";
+      const popup =
+        "<strong>Parcelle " +
+        m.ref +
+        "</strong><br>" +
+        m.surface +
+        " m² · " +
+        (m.dispo ? "disponible" : "louée") +
+        " · " +
+        m.prixAnnuel +
+        " €/an" +
+        lien;
+
+      const marker = L.circleMarker([m.lat, m.lon], {
+        radius: 10,
+        fillColor: couleur,
+        color: "#fff",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.9,
+      })
+        .addTo(map)
+        .bindTooltip(m.ref, { permanent: false })
+        .bindPopup(popup);
+
+      if (m.slug) {
+        marker.on("click", () => {
+          window.location.href = "/parcelles/" + m.slug;
+        });
+      }
+    });
+
+    if (markers.length > 0) {
+      const bounds = L.latLngBounds(markers.map((m) => [m.lat, m.lon] as [number, number]));
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 18 });
+    }
+    setTimeout(() => map.invalidateSize(), 150);
+  }
+
+  initCarteParcelles();
+</script>

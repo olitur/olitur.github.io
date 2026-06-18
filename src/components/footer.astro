@@ -1,0 +1,30 @@
+---
+interface Props {
+  overlay?: boolean;
+}
+const { overlay = false } = Astro.props;
+
+const shell = overlay
+  ? "pt-10 pb-5 border-t border-white/40 bg-creme/25 backdrop-blur-sm"
+  : "pt-10 pb-5 border-t border-stone-200 bg-transparent";
+const textTone = overlay ? "text-stone-700" : "text-stone-500";
+---
+
+<footer class={shell}>
+  <div class={`max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm ${textTone}`}>
+    <p>© {new Date().getFullYear()} Association Canopée — Luberon, Vaucluse</p>
+    <nav class="flex items-center gap-6">
+      <details class="relative group">
+        <summary class="cursor-pointer list-none hover:text-[#2D5016] [&::-webkit-details-marker]:hidden">
+          Légal <span class="text-xs">▾</span>
+        </summary>
+        <div class="absolute right-0 bottom-full mb-2 w-52 bg-white border border-stone-200 rounded-lg shadow-lg p-2 flex flex-col gap-1 z-10">
+          <a href="/mentions-legales" class="px-2 py-1 rounded hover:bg-creme hover:text-[#2D5016]">Mentions légales</a>
+          <a href="/confidentialite" class="px-2 py-1 rounded hover:bg-creme hover:text-[#2D5016]">Confidentialité</a>
+          <a href="/documents/statuts_canopee.pdf" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded hover:bg-creme hover:text-[#2D5016]">Statuts de l'association (PDF)</a>
+        </div>
+      </details>
+      <a href="/nous-rejoindre#contact" class="hover:text-[#2D5016]">Contact</a>
+    </nav>
+  </div>
+</footer>

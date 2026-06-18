@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-label="Placeholder — Four solaire Canopée">
+  <rect width="1200" height="750" fill="#FAF8F4"/>
+  <rect width="1200" height="750" fill="#C4881A" opacity="0.10"/>
+  <g stroke="#8a5a12" stroke-opacity="0.25" stroke-width="3" fill="none">
+    <circle cx="600" cy="300" r="80"/>
+    <g stroke-linecap="round">
+      <path d="M600 180 v-44 M600 420 v44 M480 300 h-44 M720 300 h44"/>
+      <path d="M515 215 l-31 -31 M685 215 l31 -31 M515 385 l-31 31 M685 385 l31 31"/>
+    </g>
+  </g>
+  <text x="600" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="700" fill="#2D5016">Canopée</text>
+  <text x="600" y="556" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#57534e">Four solaire — visuel à venir</text>
+</svg>

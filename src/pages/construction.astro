@@ -1,0 +1,156 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import AxisHeader from "@/components/axisheader.astro";
+import Callout from "@/components/callout.astro";
+
+const risques = [
+  ["Chaleur extrême (> 50 °C)", "L'enterrement (sol stable à 12–14 °C) garantit le confort sans énergie mécanique"],
+  ["Incendies de forêt", "Habitat enterré : aucune surface combustible exposée, résistance passive aux flammes"],
+  ["Sécheresse / eau", "Toit végétalisé = réservoir d'eau de pluie et microclimat local"],
+  ["Vent, grêle", "Un bâtiment enterré n'est pas soumis aux charges de vent et résiste aux chocs"],
+];
+---
+
+<Layout
+  title="Construction bioclimatique — Canopée"
+  description="Habitat bioclimatique économe : bottes de paille, pisé, maisons semi-enterrées et abris de jardin. L'axe construction de l'association Canopée."
+  texture="axe-habitat">
+  <AxisHeader
+    eyebrow="Axe 3 · Nos actions"
+    titre="Construction bioclimatique"
+    intro="Un habitat sain, économe en ressources et adapté au climat qui vient. Des abris de jardin aux maisons semi-enterrées, l'autoconstruction performante au service de la résilience."
+    from="from-[#5d4037]"
+    to="to-[#4A5568]"
+  />
+
+  <Container>
+    <article class="max-w-3xl mx-auto py-16 text-stone-600 leading-relaxed">
+      <!-- Vernaculaire -->
+      <h2 class="text-3xl font-bold text-[#5d4037]">L'habitat vernaculaire était déjà bioclimatique</h2>
+      <p class="mt-4">
+        Avant le pétrole bon marché, construire selon le climat n'était pas une idéologie mais une
+        contrainte économique. La ferme alpine (grenier-isolant, murs de pierre massifs, étable
+        mitoyenne), le pisé du Dauphiné ou les maisons troglodytes partagent trois principes que le
+        XX<sup>e</sup> siècle a abandonnés : <strong>compacité, masse, orientation</strong>. Ces
+        savoirs redeviennent aujourd'hui des références.
+      </p>
+
+      <h3 class="mt-10 text-xl font-bold text-stone-800">Orientation et inertie</h3>
+      <p class="mt-3">
+        L'orientation est la décision la plus impactante et la moins coûteuse : façade principale au
+        sud (±15°), débords de toit calculés pour bloquer le soleil d'été et capter celui d'hiver,
+        ouvertures réduites au nord. En climat méditerranéen, le levier clé du confort d'été est le
+        <strong>déphasage thermique</strong> : un mur en bottes de paille décale de 8 heures ou plus
+        l'onde de chaleur, qui n'atteint l'intérieur que la nuit — quand la ventilation a déjà
+        rafraîchi le bâtiment.
+      </p>
+
+      <!-- Matériaux -->
+      <h2 class="mt-16 text-3xl font-bold text-[#5d4037]">Matériaux biosourcés</h2>
+      <p class="mt-4">
+        Les <strong>bottes de paille haute densité</strong> (λ ≈ 0,045–0,050 W/m·K) sont un isolant
+        exceptionnel à bilan carbone négatif : la paille séquestre le carbone pendant toute sa durée
+        de vie. Le <strong>pisé</strong> (terre compactée) offre une forte inertie pour une empreinte
+        carbone quasi nulle.
+      </p>
+
+      <Callout type="warn" title="Paille porteuse : attention à l'assurance">
+        En France, les bottes en mode <em>porteur</em> (technique Nebraska) n'ont pas d'Avis Technique
+        et ne sont pas assurables en décennale — bloquant pour un autoconstructeur. La seule technique
+        paille assurable est l'<strong>ossature bois avec remplissage de bottes</strong> (Règles
+        Professionnelles CP 2012/2020).
+      </Callout>
+
+      <!-- Maison enterrée -->
+      <h2 class="mt-16 text-3xl font-bold text-[#5d4037]">La maison semi-enterrée</h2>
+      <p class="mt-4">
+        Face aux projections climatiques pour la PACA, les techniques dites « alternatives »
+        deviennent des impératifs. La maison semi-enterrée y répond mieux qu'aucune autre :
+      </p>
+
+      <div class="mt-5 overflow-hidden rounded-xl border border-stone-200">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-stone-100 text-left text-stone-700">
+              <th class="px-4 py-3 font-semibold">Risque futur</th>
+              <th class="px-4 py-3 font-semibold">Réponse architecturale</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              risques.map(([r, rep], i) => (
+                <tr class={i % 2 === 0 ? "bg-white" : "bg-stone-50"}>
+                  <td class="px-4 py-3 font-medium text-stone-700 align-top">{r}</td>
+                  <td class="px-4 py-3 text-stone-600">{rep}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-5">
+        Au-delà de 1,5–2 m de profondeur, la température du sol reste stable autour de 12–14 °C toute
+        l'année : pas de chauffage au-delà d'un appoint, pas de climatisation même à 50 °C extérieurs,
+        résistance au feu totale. Le surcoût de construction (terrassement, étanchéité, structure) est
+        réel mais <strong>non récurrent</strong>, alors que les économies sont annuelles et croissent
+        avec le prix de l'énergie.
+      </p>
+
+      <Callout type="warn" title="L'étanchéité est le point critique">
+        Une infiltration dans une paroi enterrée est difficile à détecter et dégrade vite la structure.
+        Membrane (EPDM ou bitume modifié) posée par un professionnel, drainage périphérique obligatoire,
+        protection mécanique avant remblai : ce poste n'est pas négociable.
+      </Callout>
+
+      <!-- Rôle de Canopée -->
+      <h2 class="mt-16 text-3xl font-bold text-[#5d4037]">Le rôle de Canopée : conseil, pas maîtrise d'œuvre</h2>
+      <p class="mt-4">
+        Canopée <strong>n'assure pas la maîtrise d'œuvre</strong> — ce rôle engagerait une assurance
+        décennale hors de portée de ses moyens. L'association se positionne en <strong>conseil
+        technique et accompagnement</strong> : l'autoconstructeur reste son propre maître d'ouvrage.
+        L'appui d'ingénierie (lecture de plans, choix constructifs, points de vigilance structure et
+        étanchéité, organisation des chantiers participatifs) est porté par OLT, président et ingénieur
+        structures, mobilisé ponctuellement et rémunéré en CESU.
+      </p>
+
+      <Callout type="note">
+        Le frein principal des techniques performantes est leur surcoût en main-d'œuvre qualifiée. En
+        apportant un conseil technique et en mobilisant ses membres en chantiers participatifs,
+        l'association peut abaisser ce surcoût de 15 à 20 points — ce qui rend la maison semi-enterrée
+        réellement accessible, sans que Canopée n'endosse la responsabilité d'un maître d'œuvre.
+      </Callout>
+
+      <!-- Abris de jardin -->
+      <h2 class="mt-16 text-3xl font-bold text-[#5d4037]">À commencer dès maintenant : l'abri de jardin</h2>
+      <p class="mt-4">
+        Besoin immédiat et commun à tous les jardiniers, l'abri individuel de 5 m² (ossature bois sur
+        plots, bardage de récupération, toit monopente, cuve IBC de récupération d'eau) se réalise en
+        un chantier participatif d'une journée. C'est l'application la plus simple des principes de cet
+        axe — réutilisation, matériaux locaux, entraide — à généraliser sur les parcelles.
+      </p>
+
+      <Callout type="tip" title="Précautions site de Puget">
+        Porte côté est (à l'abri du mistral), plancher surélevé de 15 cm (risque d'inondation près de
+        la Durance), ancrage anti-vent sur les plots : un abri léger résiste mal aux rafales &gt; 100 km/h.
+      </Callout>
+    </article>
+
+    <!-- CTA -->
+    <section class="my-12 bg-[#4A5568] rounded-2xl px-8 py-14 text-center max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white">Un projet d'autoconstruction ?</h2>
+      <p class="mt-3 text-stone-200 max-w-xl mx-auto leading-relaxed">
+        Conseil technique, chantiers participatifs et formations à la construction bioclimatique.
+      </p>
+      <div class="mt-7 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/nous-rejoindre#contact" class="inline-block bg-[#C4881A] hover:bg-[#b37716] text-white font-semibold px-8 py-4 rounded-lg transition">
+          Nous contacter
+        </a>
+        <a href="/formations" class="inline-block border-2 border-white/50 hover:border-white text-white font-semibold px-8 py-4 rounded-lg transition">
+          Les formations
+        </a>
+      </div>
+    </section>
+  </Container>
+</Layout>

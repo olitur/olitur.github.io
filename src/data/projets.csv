@@ -1,0 +1,13 @@
+id;titre;axe;valeurs;avancement;montant;date_debut;date_fin_prevue;blog
+maraichage-durance;Maraîchage bio-intensif — terrain Durance;alimentaire;bio-vivrier|autonomie|territoire;85;2000;2024-03-01;2026-10-01;
+irrigation-collective;Réseau d'irrigation collectif (motopompe + nourrice PEHD);alimentaire;partage|territoire|autonomie;90;6500;2024-04-01;2026-09-01;reseau-irrigation-motopompe
+biochar-adam;Four de carbonisation biochar (type Adam retort);alimentaire;bio-vivrier|autonomie;45;800;2025-06-01;2027-06-01;
+cereales-anciennes;Céréales anciennes (épeautre, engrain, seigle);alimentaire;bio-vivrier|territoire;15;1200;2025-09-01;2029-09-01;
+hvb-diesel;Huile végétale carburant (diesel injection directe);energie;autonomie;70;1500;2024-09-01;2026-12-01;
+eolienne-piggott;Éolienne Piggott autoconstruite;energie;autonomie|partage;60;3500;2025-01-01;2027-12-01;eolienne-piggott
+gazogene-bernard;Gazogène + groupe électrogène (Bernard W110);energie;autonomie|bio-vivrier;35;4000;2025-03-01;2028-03-01;
+four-solaire;Four solaire (type Lytefire);energie;autonomie|partage;10;2500;2026-01-01;2028-06-01;lancement-four-solaire
+abris-jardin;Abris de jardin (parcelles A → D);habitat;partage|territoire;35;9000;2025-05-01;2027-05-01;abris-jardin-point-etape
+paille-porteuse;Mur en bottes de paille porteuse (démonstrateur);habitat;bio-vivrier|autonomie;5;15000;2026-04-01;2031-04-01;
+four-a-pain;Four à pain autoconstruit;habitat;partage|bio-vivrier;100;600;2024-05-01;2025-05-01;four-a-pain-inauguration
+pise-atelier;Atelier pisé (terre compactée);habitat;partage|territoire;0;3000;;

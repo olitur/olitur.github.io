@@ -1,0 +1,363 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import Sectionhead from "@/components/sectionhead.astro";
+import Breadcrumb from "@/components/breadcrumb.astro";
+import csvRaw from "@/data/projets.csv?raw";
+import {
+  parseProjets,
+  calculer,
+  trierParUrgence,
+  AXES,
+  VALEURS,
+  type Sante,
+  type Axe,
+} from "@/utils/projets";
+
+const projets = trierParUrgence(parseProjets(csvRaw).map((p) => calculer(p)));
+
+const filtres = [
+  { cle: "all", label: "Tous" },
+  { cle: "alimentaire", label: AXES.alimentaire },
+  { cle: "energie", label: AXES.energie },
+  { cle: "habitat", label: AXES.habitat },
+];
+
+// Rappel des couleurs d'axe (mêmes teintes que les cartes du hero).
+const axeBadge: Record<Axe, string> = {
+  alimentaire: "bg-[#2D5016]/10 text-[#2D5016]",
+  energie: "bg-[#C4881A]/15 text-[#8a5a12]",
+  habitat: "bg-[#5d4037]/10 text-[#5d4037]",
+};
+
+// Page de chaque axe (étiquette d'axe et nom de projet sans article y renvoient).
+const axePage: Record<Axe, string> = {
+  alimentaire: "/resilience-alimentaire",
+  energie: "/autonomie-energetique",
+  habitat: "/construction",
+};
+
+// État au repos des boutons de filtre (l'état actif est géré en CSS, par couleur d'axe).
+const filtreRepos: Record<string, string> = {
+  all: "bg-white border-stone-200 text-stone-600 hover:border-stone-400",
+  alimentaire: "bg-[#2D5016]/10 border-[#2D5016]/20 text-[#2D5016] hover:border-[#2D5016]",
+  energie: "bg-[#C4881A]/15 border-[#C4881A]/30 text-[#8a5a12] hover:border-[#C4881A]",
+  habitat: "bg-[#5d4037]/10 border-[#5d4037]/20 text-[#5d4037] hover:border-[#5d4037]",
+};
+
+// Couleur + symbole pour chaque état ; luminosités distinctes (lisibles sans la teinte).
+const santeClass: Record<Sante, string> = {
+  "En avance": "bg-blue-100 text-blue-800",
+  "Dans les temps": "bg-emerald-100 text-emerald-800",
+  "En retard": "bg-red-100 text-red-800 ring-1 ring-red-300",
+  "Réalisé": "bg-[#2D5016] text-white",
+  "Non planifié": "bg-stone-100 text-stone-500",
+};
+
+// Remplissage de la barre d'avancement, accordé à l'état du projet.
+const barFill: Record<Sante, string> = {
+  "En avance": "bg-blue-500",
+  "Dans les temps": "bg-emerald-600",
+  "En retard": "bg-red-500",
+  "Réalisé": "bg-[#2D5016]",
+  "Non planifié": "bg-stone-400",
+};
+
+const eur = (n: number) => n.toLocaleString("fr-FR");
+const echeance = (d: Date | null) =>
+  d ? d.toLocaleDateString("fr-FR", { month: "2-digit", year: "numeric" }) : "—";
+
+const totalEstime = projets.reduce((s, p) => s + (p.montant ?? 0), 0);
+---
+
+<Layout
+  title="Projets — Canopée"
+  description="L'état d'avancement des projets de l'association Canopée : maraîchage, énergie, habitat. Montant estimé, échéance et santé planning de chaque chantier.">
+  <Container>
+    <div class="mt-8">
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Ressources", href: "/ressources" },
+          { label: "Projets" },
+        ]}
+      />
+    </div>
+    <Sectionhead>
+      <Fragment slot="title">Les projets</Fragment>
+      <Fragment slot="desc">
+        Tous les chantiers de Canopée, par axes, <br> 
+        avec leur montant estimé, leur échéance et leur "santé planning" correspondant à <br> 
+        l'avancement réel constaté ce jour par rapport à l'avancement estimé.
+      </Fragment>
+    </Sectionhead>
+
+    <!-- Filtres par axe -->
+    <div class="mt-10 flex flex-wrap justify-center gap-2">
+      {
+        filtres.map((f, i) => (
+          <button
+            type="button"
+            data-filter={f.cle}
+            class:list={[
+              "filtre rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+              filtreRepos[f.cle],
+              i === 0 && "is-active",
+            ]}>
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- Tableau -->
+    <div class="mt-8 overflow-x-auto rounded-2xl border border-stone-200">
+      <table class="w-full min-w-[760px] text-sm">
+        <thead>
+          <tr class="border-b border-stone-200 bg-stone-50 text-left text-xs uppercase tracking-wide text-stone-500">
+            <th class="px-4 py-3 font-semibold">
+              <button type="button" class="tri inline-flex cursor-pointer select-none items-center gap-1 hover:text-stone-700" data-sort="titre" data-type="text" data-dir="asc">
+                Projet<span class="tri-ind inline-block w-3 text-stone-400"></span>
+              </button>
+            </th>
+            <th class="px-4 py-3 font-semibold">
+              <button type="button" class="tri inline-flex cursor-pointer select-none items-center gap-1 hover:text-stone-700" data-sort="axe" data-type="text" data-dir="asc">
+                Axe<span class="tri-ind inline-block w-3 text-stone-400"></span>
+              </button>
+            </th>
+            <th class="px-4 py-3 font-semibold text-right">
+              <button type="button" class="tri inline-flex cursor-pointer select-none items-center gap-1 hover:text-stone-700" data-sort="montant" data-type="num" data-dir="desc">
+                Montant<span class="tri-ind inline-block w-3 text-stone-400"></span>
+              </button>
+            </th>
+            <th class="px-4 py-3 font-semibold">
+              <button type="button" class="tri inline-flex cursor-pointer select-none items-center gap-1 hover:text-stone-700" data-sort="fin" data-type="num" data-dir="asc">
+                Échéance<span class="tri-ind inline-block w-3 text-stone-400"></span>
+              </button>
+            </th>
+            <th class="px-4 py-3 font-semibold w-56">
+              <button type="button" class="tri inline-flex cursor-pointer select-none items-center gap-1 hover:text-stone-700" data-sort="avancement" data-type="num" data-dir="desc">
+                Avancement<span class="tri-ind inline-block w-3 text-stone-400"></span>
+              </button>
+            </th>
+            <th class="px-4 py-3 font-semibold">
+              <button type="button" class="tri inline-flex cursor-pointer select-none items-center gap-1 hover:text-stone-700" data-sort="ecart" data-type="num" data-dir="asc">
+                Santé<span class="tri-ind inline-block w-3 text-stone-400"></span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            projets.map((p) => (
+              <tr
+                data-axe={p.axe}
+                data-titre={p.titre}
+                data-montant={p.montant ?? ""}
+                data-fin={p.fin ? p.fin.getTime() : ""}
+                data-avancement={p.avancement}
+                data-ecart={p.ecart ?? ""}
+                class="border-b border-stone-100 last:border-0 align-top">
+                <td class="px-4 py-4">
+                  <a
+                    href={p.blog ? `/blog/${p.blog}` : axePage[p.axe]}
+                    class="font-semibold text-stone-800 underline-offset-2 decoration-stone-300 hover:text-[#2D5016] hover:underline">
+                    {p.titre}
+                  </a>
+                  <div class="mt-1.5 flex flex-wrap gap-1">
+                    {p.valeurs.map((v) => (
+                      <span class="rounded-full bg-stone-100 px-2 py-0.5 text-[11px] text-stone-500">
+                        {VALEURS[v] ?? v}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+                <td class="px-4 py-4">
+                  <a
+                    href={axePage[p.axe]}
+                    class:list={[
+                      "inline-block rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap transition hover:ring-1 hover:ring-inset hover:ring-current",
+                      axeBadge[p.axe],
+                    ]}>
+                    {AXES[p.axe]}
+                  </a>
+                </td>
+                <td class="px-4 py-4 text-right whitespace-nowrap text-stone-700">
+                  {p.montant !== null ? `${eur(p.montant)} €` : "—"}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap text-stone-600 tabular-nums">
+                  {echeance(p.fin)}
+                </td>
+                <td class="px-4 py-4">
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="relative h-2 flex-1 rounded-full bg-stone-200"
+                      title={
+                        p.attendu !== null
+                          ? `Attendu ~${p.attendu}% · réel ${p.avancement}%`
+                          : `Réel ${p.avancement}%`
+                      }>
+                      <div
+                        class:list={[
+                          "absolute inset-y-0 left-0 rounded-full",
+                          barFill[p.sante],
+                        ]}
+                        style={`width:${p.avancement}%`}
+                      />
+                      {p.attendu !== null && (
+                        <div
+                          class="absolute top-1/2 h-3.5 w-px -translate-y-1/2 bg-stone-600"
+                          style={`left:${p.attendu}%`}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </div>
+                    <span class="w-9 shrink-0 text-right tabular-nums text-stone-500">
+                      {p.avancement}%
+                    </span>
+                  </div>
+                </td>
+                <td class="px-4 py-4">
+                  <span
+                    class:list={[
+                      "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap",
+                      santeClass[p.sante],
+                    ]}>
+                    <span aria-hidden="true">{p.symbole}</span>
+                    {p.sante}
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Légende + total -->
+    <div class="mt-5 flex flex-col gap-3 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex flex-wrap gap-x-4 gap-y-1">
+        <span>▲ En avance</span>
+        <span>● Dans les temps</span>
+        <span>▼ En retard</span>
+        <span>✓ Réalisé</span>
+        <span>— Non planifié</span>
+      </div>
+      <div class="sm:text-right">
+        <span id="projets-count" class="font-medium text-stone-600">{projets.length}</span>
+        projets · enveloppe estimée
+        <span id="projets-total" class="font-medium text-stone-600">{eur(totalEstime)} €</span>
+      </div>
+    </div>
+
+    <p class="mt-3 text-xs text-stone-400">
+      Le repère vertical sur la barre indique l'avancement <em>attendu</em> à ce
+      jour (temps écoulé sur la durée prévue). Données indicatives, mises à jour
+      périodiquement.
+    </p>
+
+    <div class="h-16"></div>
+  </Container>
+</Layout>
+
+<style>
+  .filtre.is-active {
+    color: #fff;
+  }
+  .filtre.is-active[data-filter="all"] {
+    background-color: #44403c;
+    border-color: #44403c;
+  }
+  .filtre.is-active[data-filter="alimentaire"] {
+    background-color: #2d5016;
+    border-color: #2d5016;
+  }
+  .filtre.is-active[data-filter="energie"] {
+    background-color: #c4881a;
+    border-color: #c4881a;
+  }
+  .filtre.is-active[data-filter="habitat"] {
+    background-color: #5d4037;
+    border-color: #5d4037;
+  }
+</style>
+
+<script>
+  const boutons = document.querySelectorAll<HTMLButtonElement>(".filtre");
+  const lignes = document.querySelectorAll<HTMLTableRowElement>("tbody tr[data-axe]");
+  const elCount = document.getElementById("projets-count");
+  const elTotal = document.getElementById("projets-total");
+
+  const appliquer = (cible: string) => {
+    let n = 0;
+    let total = 0;
+    lignes.forEach((tr) => {
+      const visible = cible === "all" || tr.dataset.axe === cible;
+      tr.style.display = visible ? "" : "none";
+      if (visible) {
+        n += 1;
+        total += Number(tr.dataset.montant) || 0;
+      }
+    });
+    if (elCount) elCount.textContent = String(n);
+    if (elTotal) elTotal.textContent = `${total.toLocaleString("fr-FR")} €`;
+  };
+
+  boutons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      boutons.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      appliquer(btn.dataset.filter ?? "all");
+    });
+  });
+
+  // Tri par colonne
+  const tbody = document.querySelector<HTMLTableSectionElement>("table tbody");
+  const enTetes = document.querySelectorAll<HTMLButtonElement>(".tri");
+  let triActif: HTMLButtonElement | null = null;
+
+  const valeurTri = (tr: HTMLTableRowElement, key: string, type: string) => {
+    const raw = tr.dataset[key] ?? "";
+    if (type === "text") return raw;
+    return raw === "" ? null : Number(raw);
+  };
+
+  const trier = (key: string, type: string, dir: string) => {
+    if (!tbody) return;
+    const rows = Array.from(
+      tbody.querySelectorAll<HTMLTableRowElement>("tr[data-axe]")
+    );
+    rows.sort((ra, rb) => {
+      const a = valeurTri(ra, key, type);
+      const b = valeurTri(rb, key, type);
+      if (type === "text") {
+        return dir === "asc"
+          ? String(a).localeCompare(String(b), "fr")
+          : String(b).localeCompare(String(a), "fr");
+      }
+      if (a === null && b === null) return 0;
+      if (a === null) return 1; // valeurs absentes toujours en fin de liste
+      if (b === null) return -1;
+      return dir === "asc"
+        ? (a as number) - (b as number)
+        : (b as number) - (a as number);
+    });
+    rows.forEach((r) => tbody.appendChild(r));
+  };
+
+  enTetes.forEach((th) => {
+    th.addEventListener("click", () => {
+      const key = th.dataset.sort!;
+      const type = th.dataset.type!;
+      let dir = th.dataset.dir || "asc";
+      if (triActif === th) dir = th.dataset.cur === "asc" ? "desc" : "asc";
+      th.dataset.cur = dir;
+      triActif = th;
+      enTetes.forEach((o) => {
+        const ind = o.querySelector(".tri-ind");
+        if (ind) ind.textContent = o === th ? (dir === "asc" ? "▲" : "▼") : "";
+      });
+      trier(key, type, dir);
+    });
+  });
+</script>

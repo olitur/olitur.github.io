@@ -1,0 +1,218 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import AxisHeader from "@/components/axisheader.astro";
+import Callout from "@/components/callout.astro";
+
+const planche = [
+  ["Largeur", "75 cm — accessible des deux côtés sans fouler le sol cultivé"],
+  ["Longueur", "15 à 30 m selon la parcelle"],
+  ["Allées", "45 cm — circulation et agenouillement sans compaction"],
+  ["Hauteur", "10 à 15 cm au-dessus du sol → drainage amélioré"],
+  ["Permanence", "La planche ne bouge pas d'une année sur l'autre → capital organique accumulé"],
+];
+
+const choix = [
+  {
+    solution: "Maraîchage bio-intensif (méthode Fortier adaptée)",
+    statut: "Retenu — immédiat",
+    logique: "Moins de 1 000 €/parcelle (compost, grelinette, voiles). Objectif autosuffisance, pas de visée commerciale.",
+  },
+  {
+    solution: "Amendements produits sur site (biochar activé, purins, LiFoFer)",
+    statut: "Retenu",
+    logique: "Matière première gratuite (élagage, orties, consoude, litière forestière) ; remplace les intrants achetés.",
+  },
+  {
+    solution: "Four de carbonisation artisanal (type Adam retort)",
+    statut: "Retenu — projet",
+    logique: "Plans FAO gratuits ; préféré aux fours commerciaux jugés trop onéreux.",
+  },
+  {
+    solution: "Céréales anciennes",
+    statut: "En expérimentation",
+    logique: "Surface et matériel de transformation à mutualiser ; montée en charge progressive.",
+  },
+  {
+    solution: "Pyrolyseur continu / four mobile commercial",
+    statut: "Écarté pour l'instant",
+    logique: "10 000–30 000 € : hors de portée tant que le four artisanal suffit.",
+  },
+];
+
+const statutColor = (s: string) =>
+  s.startsWith("Retenu")
+    ? "bg-emerald-100 text-emerald-800"
+    : s.startsWith("En expérimentation")
+    ? "bg-amber-100 text-amber-800"
+    : "bg-stone-100 text-stone-500";
+---
+
+<Layout
+  title="Résilience alimentaire — Canopée"
+  description="Maraîchage bio-intensif, céréales anciennes et amendements produits sur site : l'axe résilience alimentaire de l'association Canopée."
+  texture="axe-alimentaire">
+  <AxisHeader
+    eyebrow="Axe 1 · Nos actions"
+    titre="Résilience alimentaire"
+    intro="Cultiver une nourriture saine sur petite surface, en valorisant les ressources gratuites du site et un outillage mutualisé. Ce que Canopée expérimente, pratique et transmet à ses jardiniers."
+    from="from-[#2D5016]"
+    to="to-[#3a6a1e]"
+  />
+
+  <Container>
+    <article class="max-w-3xl mx-auto py-16 text-stone-600 leading-relaxed">
+      <!-- Maraîchage bio-intensif -->
+      <h2 class="text-3xl font-bold text-[#2D5016]">Le maraîchage bio-intensif</h2>
+      <p class="mt-4">
+        La méthode popularisée par Jean-Martin Fortier (<em>Le jardinier-maraîcher</em>) repose
+        sur un postulat audacieux : il est possible de produire abondamment sur moins d'un hectare,
+        en substituant la connaissance agronomique et des outils adaptés à la mécanisation lourde
+        et aux intrants de synthèse.
+      </p>
+
+      <Callout type="note">
+        Canopée ne vise pas la rentabilité professionnelle du modèle Fortier — les jardiniers louent
+        leurs parcelles, ils n'ont pas vocation à en vivre. La méthode reste une boussole agronomique
+        solide : gestion du sol, densité et rotations s'appliquent à toute échelle, y compris un
+        jardin associatif de 320 m².
+      </Callout>
+
+      <h3 class="mt-10 text-xl font-bold text-stone-800">La planche permanente</h3>
+      <p class="mt-3">
+        Unité de base du système, ses dimensions sont standardisées pour s'adapter à des outils
+        spécifiques. Sa permanence est décisive : le sol n'est jamais compacté sur la zone cultivée,
+        la vie microbienne se stabilise, et chaque centimètre de compost reste en place.
+      </p>
+
+      <div class="mt-5 overflow-hidden rounded-xl border border-stone-200">
+        <table class="w-full text-sm">
+          <tbody>
+            {
+              planche.map(([k, v], i) => (
+                <tr class={i % 2 === 0 ? "bg-emerald-50/40" : "bg-white"}>
+                  <th class="text-left font-semibold text-stone-700 align-top px-4 py-3 w-32">{k}</th>
+                  <td class="px-4 py-3 text-stone-600">{v}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="mt-10 text-xl font-bold text-stone-800">Travail minimal du sol</h3>
+      <p class="mt-3">
+        À la charrue qui retourne et oxyde le sol, la méthode substitue la <strong>grelinette</strong> :
+        un outil manuel qui soulève et aère le sol en profondeur sans inverser les horizons,
+        préservant les réseaux mycorhiziens et le carbone en place. Le paillage permanent (BRF,
+        paille ou foin) complète ce travail en limitant l'évaporation et la germination des adventices.
+      </p>
+
+      <h3 class="mt-10 text-xl font-bold text-stone-800">Densité et successions</h3>
+      <p class="mt-3">
+        Les plants sont espacés à la distance minimale de bon développement : leurs feuilles se
+        touchent à maturité et forment une <em>canopée végétale</em> qui étouffe les adventices,
+        retient l'humidité et crée un microclimat frais. Une même planche accueille 2 à 4 cultures
+        par saison, et les familles botaniques tournent sur un cycle de 3 à 4 ans.
+      </p>
+
+      <Callout type="definition" title="Règle des familles botaniques">
+        Ne jamais faire succéder deux cultures de la même famille sur la même planche. Les six
+        familles à piloter : solanacées · cucurbitacées · brassicacées · légumineuses · ombellifères
+        · chénopodiacées.
+      </Callout>
+
+      <!-- Amendements -->
+      <h2 class="mt-16 text-3xl font-bold text-[#2D5016]">Amendements produits sur site</h2>
+      <p class="mt-4">
+        Les élagages et la végétation des terrains ne sont pas des déchets : ils sont la matière
+        première de trois amendements fabriqués en autonomie — <strong>biochar</strong>,
+        <strong>vinaigre de bois</strong> et <strong>purins de plantes</strong>. Tous trois
+        renforcent la fertilité du sol et remplacent partiellement les intrants, dans une logique
+        de cycle fermé.
+      </p>
+
+      <h3 class="mt-8 text-xl font-bold text-stone-800">Le biochar et son activation</h3>
+      <p class="mt-3">
+        Le charbon végétal issu de la pyrolyse améliore durablement la rétention d'eau et l'activité
+        microbienne du sol. Mais le biochar frais est <em>vierge</em> : épandu directement, il capte
+        les nutriments au détriment des plantes. Il doit être <strong>activé</strong> — imprégné de
+        nutriments et de micro-organismes — par trempage dans un purin, un thé de compost ou du
+        LiFoFer, puis maturé en compostière avant épandage.
+      </p>
+
+      <h3 class="mt-8 text-xl font-bold text-stone-800">Purins et LiFoFer</h3>
+      <p class="mt-3">
+        Produits gratuitement à partir des plantes du site : le <strong>purin d'ortie</strong>
+        (azote, croissance végétative), de <strong>consoude</strong> (potassium, fructification),
+        de <strong>prêle</strong> (silice, résistance fongique), et le <strong>LiFoFer</strong>
+        (litière forestière fermentée), un inoculant microbien qui apporte au sol la diversité
+        biologique d'une forêt mature.
+      </p>
+
+      <Callout type="tip" title="Un gisement, deux filières">
+        La biomasse d'élagage se répartit selon sa taille : les branches &gt; 5 cm vont au four de
+        carbonisation (biochar, vinaigre de bois), les plaquettes fines de 2–5 cm alimentent le
+        gazogène producteur d'électricité (voir l'axe <a href="/autonomie-energetique" class="underline text-[#2D5016]">autonomie énergétique</a>).
+        Une seule ressource, deux chaînes de valorisation sans concurrence.
+      </Callout>
+
+      <!-- Eau & céréales -->
+      <h2 class="mt-16 text-3xl font-bold text-[#2D5016]">Eau et céréales anciennes</h2>
+      <p class="mt-4">
+        Réduire les besoins en eau prime sur l'augmentation du débit : paillage permanent,
+        irrigation au pied et arrosage aux heures fraîches réduisent la consommation de 40 à 60 %.
+        Le terrain Durance est irrigué par un réseau collectif (motopompe + nourrice PEHD), qui a
+        fait l'objet d'un dimensionnement hydraulique complet. Aux légumes s'ajoutent les
+        <strong>céréales anciennes</strong> (épeautre, engrain, seigle) — source de glucides, de
+        protéines végétales et de farines à moudre soi-même.
+      </p>
+
+      <!-- Choix de Canopée -->
+      <h2 class="mt-16 text-3xl font-bold text-[#2D5016]">Le choix de Canopée</h2>
+      <p class="mt-4">
+        Les techniques ci-dessus forment un panorama. Voici ce que l'association retient
+        concrètement, et selon quelle logique — d'abord économique.
+      </p>
+
+      <div class="mt-6 space-y-3">
+        {
+          choix.map((c) => (
+            <div class="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm hover:border-[#2D5016]/40 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div class="flex items-start justify-between gap-3 flex-wrap">
+                <h3 class="font-semibold text-stone-800">{c.solution}</h3>
+                <span class:list={["shrink-0 px-3 py-1 rounded-full text-xs font-medium", statutColor(c.statut)]}>
+                  {c.statut}
+                </span>
+              </div>
+              <p class="mt-2 text-sm text-stone-500">{c.logique}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="mt-6">
+        En résumé, Canopée privilégie partout la <strong>valorisation des ressources gratuites du
+        site</strong> et l'<strong>outillage mutualisé</strong>, de façon à maintenir
+        l'investissement par parcelle sous 1 000 €. La boussole n'est pas la rentabilité, mais
+        l'autosuffisance alimentaire à coût d'entrée minimal.
+      </p>
+    </article>
+
+    <!-- CTA -->
+    <section class="my-12 bg-[#2D5016] rounded-[2rem] px-8 py-14 text-center max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white">Cultiver une parcelle avec Canopée</h2>
+      <p class="mt-3 text-emerald-100 max-w-xl mx-auto leading-relaxed">
+        Parcelles à louer, formations au maraîchage bio-intensif et chantiers participatifs.
+      </p>
+      <div class="mt-7 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/terrains" class="inline-block bg-[#C4881A] hover:bg-[#b37716] text-white font-semibold px-8 py-4 rounded-full shadow-sm hover:shadow-md transition-all duration-300">
+          Voir les parcelles
+        </a>
+        <a href="/formations" class="inline-block border-2 border-white/40 hover:border-white text-white font-semibold px-8 py-4 rounded-full transition-all duration-300">
+          Les formations
+        </a>
+      </div>
+    </section>
+  </Container>
+</Layout>

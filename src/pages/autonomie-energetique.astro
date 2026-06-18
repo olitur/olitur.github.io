@@ -1,0 +1,166 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/container.astro";
+import AxisHeader from "@/components/axisheader.astro";
+import Callout from "@/components/callout.astro";
+
+const feuilleRoute = [
+  { rang: "1", solution: "Carburant HVP (tournesol) — fourgon et tracteur", cout: "~550 €", statut: "À implémenter" },
+  { rang: "2", solution: "Cuisinière / poêle de masse", cout: "~1 800 € (ou kit DIY)", statut: "À implémenter" },
+  { rang: "3", solution: "Gazogène + groupe électrogène moteur Bernard", cout: "4 000–7 000 €", statut: "Projet" },
+  { rang: "4", solution: "Éolienne Piggott 3,60 m autoconstruite", cout: "3 000–5 000 €", statut: "Projet" },
+];
+---
+
+<Layout
+  title="Autonomie énergétique — Canopée"
+  description="Huile végétale carburant, gazogène à plaquettes, éolienne Piggott, fours solaires et poêles de masse : l'axe autonomie énergétique de Canopée."
+  texture="axe-energie">
+  <AxisHeader
+    eyebrow="Axe 2 · Nos actions"
+    titre="Autonomie énergétique"
+    intro="Produire et utiliser l'énergie en s'affranchissant des filières fossiles, à partir des ressources locales : biomasse d'élagage, vent et soleil. Un panorama des technologies expérimentées ou en projet à Canopée."
+    from="from-[#C4881A]"
+    to="to-[#8a5a12]"
+  />
+
+  <Container>
+    <article class="max-w-3xl mx-auto py-16 text-stone-600 leading-relaxed">
+      <!-- HVP -->
+      <h2 class="text-3xl font-bold text-[#9a6a14]">Huile végétale carburant</h2>
+      <p class="mt-4">
+        Les moteurs diesel anciens à injection indirecte (avant les normes Common Rail) fonctionnent
+        à l'huile végétale pure sans modification majeure. Canopée s'appuie sur deux engins déjà
+        choisis pour leur tolérance à l'huile : le <strong>fourgon Iveco 35.10</strong> (1985) et le
+        <strong>tracteur International Harvester 844 SB</strong> (1975).
+      </p>
+
+      <Callout type="warn" title="Le tournesol — un choix économique assumé">
+        Techniquement, le colza est la meilleure huile carburant (plus stable, moins de cires).
+        Canopée retiendra pourtant le <strong>tournesol</strong> : importé brut de Turquie à
+        ~0,30 €/L (commande de 2 t ≈ 550 € livrée), soit un cinquième du gazole. L'écart de qualité
+        devient acceptable, à condition de compenser par une filtration soignée, un coupage au gazole
+        et un usage par temps doux. La solution idéale cède devant la solution réaliste.
+      </Callout>
+
+      <!-- Gazogène -->
+      <h2 class="mt-16 text-3xl font-bold text-[#9a6a14]">Gazogène — électricité sur plaquettes</h2>
+      <p class="mt-4">
+        Pour produire de l'électricité, le gazogène valorise les plaquettes forestières d'élagage —
+        un combustible gratuit — en gaz de synthèse alimentant un groupe électrogène. Canopée vise
+        un <strong>gazogène co-courant</strong> (downdraft, faible teneur en goudrons, compatible
+        moteur) couplé à un <strong>groupe à moteur Bernard essence</strong>, adaptable au syngas
+        par un simple mélangeur air/gaz.
+      </p>
+
+      <Callout type="warn" title="Le goudron, ennemi numéro un">
+        Même en configuration co-courant, le syngas contient des goudrons résiduels qui encrassent
+        carburateur et soupapes. La filtration doit être rigoureusement dimensionnée et nettoyée
+        chaque jour d'utilisation — c'est le principal facteur d'échec des projets amateurs. Compter
+        6 à 12 mois d'apprentissage avant un fonctionnement fiable, et un détecteur de CO obligatoire
+        (le syngas contient ~20 % de monoxyde de carbone).
+      </Callout>
+
+      <!-- Éolienne -->
+      <h2 class="mt-16 text-3xl font-bold text-[#9a6a14]">Éolienne Piggott</h2>
+      <p class="mt-4">
+        Référence mondiale du petit éolien autoconstruit, l'éolienne Piggott est fabriquée localement
+        avec de l'acier ordinaire, des bobinages de cuivre et des pales sculptées dans le bois —
+        entièrement réparable sur place, sans pièce propriétaire. Simple, robuste et performante, elle
+        produit dès 3 m/s de vent et atteint sa puissance nominale vers 10 m/s.
+      </p>
+      <p class="mt-3">
+        Canopée vise un modèle de 3,60 m installé près de la Durance et <strong>couplé directement à
+        une pompe d'irrigation</strong> : le pompage fonctionne au fil du vent, ce qui supprime le
+        poste batteries — c'est l'eau qui est stockée, pas l'électricité. Un usage qui tolère
+        parfaitement l'intermittence et s'accorde au régime de mistral du site.
+      </p>
+
+      <Callout type="tip">
+        L'association Tripalium organise en France des chantiers participatifs de construction
+        d'éoliennes Piggott : le meilleur moyen d'en maîtriser la fabrication, notamment la délicate
+        réalisation des pales. Une étude de vent de 6 à 12 mois reste recommandée avant tout chantier.
+      </Callout>
+
+      <!-- Fours solaires & poêles -->
+      <h2 class="mt-16 text-3xl font-bold text-[#9a6a14]">Chaleur : solaire et bois</h2>
+      <p class="mt-4">
+        Le <strong>four solaire</strong> produit directement de la chaleur, sans combustible ni
+        électricité — pertinent en PACA (~2 700 h de soleil/an). Le concentrateur DIY
+        <em>LyteFire</em> (jusqu'à 300 °C) ouvre deux débouchés concrets pour Canopée : la torréfaction
+        de pois-chiches pour la vente directe, et une boulangerie solaire semi-professionnelle
+        (30–45 kg de pain/jour).
+      </p>
+      <p class="mt-3">
+        Pour le chauffage de l'habitat, le <strong>poêle de masse</strong> prend le relais avec le
+        bois local : une flambée vive le matin charge une masse réfractaire qui restitue sa chaleur
+        8 à 12 heures, à un rendement de 70 à 92 %. La <em>cuisinière de masse</em> (foyer DSR en fût
+        métallique, sans maçonnerie, ~1 800 €) cumule chauffage et plaque de cuisson — idéale pour un
+        bâtiment associatif et reproductible en chantier participatif.
+      </p>
+
+      <!-- Feuille de route -->
+      <h2 class="mt-16 text-3xl font-bold text-[#9a6a14]">La feuille de route de Canopée</h2>
+      <p class="mt-4">
+        Le critère est économique : commencer par ce qui coûte le moins, se met en œuvre le plus
+        simplement et améliore directement le quotidien des membres. Deux priorités touchent la vie
+        de tous les jours (carburant, chauffage) ; deux projets plus lourds concernent la production
+        d'électricité.
+      </p>
+
+      <div class="mt-6 overflow-hidden rounded-xl border border-stone-200">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-amber-50 text-left text-stone-700">
+              <th class="px-4 py-3 font-semibold w-12">#</th>
+              <th class="px-4 py-3 font-semibold">Solution retenue</th>
+              <th class="px-4 py-3 font-semibold whitespace-nowrap">Coût d'entrée</th>
+              <th class="px-4 py-3 font-semibold">Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              feuilleRoute.map((r, i) => (
+                <tr class={i % 2 === 0 ? "bg-white" : "bg-amber-50/40"}>
+                  <td class="px-4 py-3 font-bold text-[#C4881A]">{r.rang}</td>
+                  <td class="px-4 py-3 text-stone-700">{r.solution}</td>
+                  <td class="px-4 py-3 text-stone-600 whitespace-nowrap">{r.cout}</td>
+                  <td class="px-4 py-3">
+                    <span class:list={[
+                      "px-2.5 py-1 rounded-full text-xs font-medium",
+                      r.statut === "À implémenter" ? "bg-emerald-100 text-emerald-800" : "bg-stone-100 text-stone-500",
+                    ]}>
+                      {r.statut}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-6">
+        Carburant HVP et cuisinière de masse forment le socle « vie quotidienne » : peu coûteux,
+        techniquement simples, ils profitent immédiatement à tous les membres. Le gazogène et
+        l'éolienne, plus capitalistiques, viennent ensuite.
+      </p>
+    </article>
+
+    <!-- CTA -->
+    <section class="my-12 bg-[#9a6a14] rounded-2xl px-8 py-14 text-center max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white">Participer aux projets énergie</h2>
+      <p class="mt-3 text-amber-50 max-w-xl mx-auto leading-relaxed">
+        Chantiers participatifs et formations à l'autonomie énergétique en Luberon.
+      </p>
+      <div class="mt-7 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/formations" class="inline-block bg-[#2D5016] hover:bg-[#3a6a1e] text-white font-semibold px-8 py-4 rounded-lg transition">
+          Les formations
+        </a>
+        <a href="/nous-rejoindre" class="inline-block border-2 border-white/50 hover:border-white text-white font-semibold px-8 py-4 rounded-lg transition">
+          Devenir adhérent
+        </a>
+      </div>
+    </section>
+  </Container>
+</Layout>
