@@ -4,113 +4,16 @@ import Container from "@/components/container.astro";
 import Sectionhead from "@/components/sectionhead.astro";
 import Breadcrumb from "@/components/breadcrumb.astro";
 import { Image } from "astro:assets";
+import sections from "@/data/documents.json";
 
-// Astro optimise (→ webp) les images de src/assets/ importées ici
+// Liste pilotée par le manifeste src/data/documents.json (source de vérité unique,
+// partagée avec la recette « just sync-web » du projet documentation/).
+// Astro optimise (→ webp) les vignettes de src/assets/thumbs/ chargées ici.
 const thumbs = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/thumbs/*.jpg",
   { eager: true },
 );
-const thumbOf = (name: string) => thumbs[`/src/assets/thumbs/${name}`].default;
-
-const sections = [
-  {
-    titre: "Statuts de l'association",
-    docs: [
-      {
-        titre: "Statuts de Canopée",
-        desc: "Les statuts de l'association loi 1901 : objet social autour des trois axes (résilience alimentaire, autonomie énergétique, habitat bioclimatique), composition et rôle des organes (assemblée générale, conseil d'administration, bureau), conditions d'adhésion, ressources et règles de fonctionnement. Document de référence pour tout adhérent.",
-        file: "/documents/statuts_canopee.pdf",
-        thumb: "statuts.jpg",
-      },
-    ],
-  },
-  {
-    titre: "Jardins & location de parcelles",
-    docs: [
-      {
-        titre: "Présentation des jardins collectifs",
-        desc: "Le dossier complet de l'offre de location : les quatre terrains (A à D), les surfaces (350 et 700 m²) et leur état, les services inclus (eau, cabane, compost, formations), le tarif différencié (0,15 €/m²/mois en parcelle travaillée, 0,10 € en friche), un bilan économique chiffré (petit et grand jardin) et les conditions essentielles du bail.",
-        file: "/documents/jardins/location_jardins.pdf",
-        thumb: "location_jardins.jpg",
-      },
-      {
-        titre: "Contrat de location type",
-        desc: "Le modèle de bail de parcelle et son règlement intérieur : désignation de la parcelle (terrain, surface), loyer et modalités de paiement, dépôt de garantie, obligations du locataire et du bailleur, pratiques agroécologiques imposées, assurances, conditions de résiliation et états des lieux.",
-        file: "/documents/jardins/contrat_location.pdf",
-        thumb: "contrat_location.jpg",
-      },
-    ],
-  },
-  {
-    titre: "Guide Canopée",
-    docs: [
-      {
-        titre: "Guide des membres Canopée",
-        desc: "Le guide de référence de l'association, organisé en trois parties indépendantes : résilience alimentaire (maraîchage bio-intensif, céréales anciennes), autonomie énergétique (huile végétale carburant, gazogène, éolienne Piggott, four solaire) et construction bioclimatique économique (paille porteuse, pisé, habitat semi-enterré, autoconstruction).",
-        file: "/documents/guide/guide_canopee.pdf",
-        thumb: "guide_canopee.jpg",
-      },
-    ],
-  },
-  {
-    titre: "Annexes — fiches pratiques",
-    docs: [
-      {
-        titre: "Guide biochar & bokashi",
-        desc: "Fiche pratique : fabrication et usage du biochar (charbon végétal) et du bokashi (fermentation anaérobie) pour enrichir durablement le sol du jardin.",
-        file: "/documents/guide/annexes/biochar-bokashi.pdf",
-        thumb: "biochar-bokashi.jpg",
-      },
-      {
-        titre: "Guide MSV — maraîchage sur sol vivant (2022)",
-        desc: "Principes et mise en œuvre du maraîchage sur sol vivant : couverts, paillage permanent, non-travail du sol, gestion de la fertilité et de l'eau.",
-        file: "/documents/guide/annexes/guide-msv-2022.pdf",
-        thumb: "guide-msv-2022.jpg",
-      },
-      {
-        titre: "Irrigation par motopompe",
-        desc: "Dimensionnement et installation d'un système d'irrigation par motopompe depuis le canal ou la Durance, vers les cuves IBC des parcelles.",
-        file: "/documents/guide/annexes/irrigation-motopompe.pdf",
-        thumb: "irrigation-motopompe.jpg",
-      },
-    ],
-  },
-  {
-    titre: "Notes techniques",
-    docs: [
-      {
-        titre: "Biostimulants",
-        desc: "Note technique sur les biostimulants au jardin : préparations, dosages et effets sur la vie du sol et la vigueur des cultures.",
-        file: "/documents/guide/notes/biostimulants.pdf",
-        thumb: "biostimulants.jpg",
-      },
-      {
-        titre: "Haricot sec",
-        desc: "Note technique sur la culture du haricot sec : variétés, semis, conduite, récolte et conservation pour l'autonomie en protéines végétales.",
-        file: "/documents/guide/notes/haricot-sec.pdf",
-        thumb: "haricot-sec.jpg",
-      },
-      {
-        titre: "Mildiou de la pomme de terre",
-        desc: "Note technique : prévenir et gérer le Phytophthora infestans en agriculture biologique — cycle du pathogène, choix variétal, maîtrise de l'humidité et interventions bio pour sécuriser la récolte.",
-        file: "/documents/guide/notes/mildiou.pdf",
-        thumb: "mildiou.jpg",
-      },
-      {
-        titre: "Potentiel redox",
-        desc: "Note technique sur le potentiel redox des sols : mesure, interprétation et leviers pour favoriser un sol vivant et équilibré.",
-        file: "/documents/guide/notes/redox.pdf",
-        thumb: "redox.jpg",
-      },
-      {
-        titre: "Éolienne Piggott",
-        desc: "Note technique sur l'éolienne autoconstruite type Piggott : principe, dimensionnement et mise en œuvre pour la production électrique d'appoint.",
-        file: "/documents/guide/notes/eolienne-piggott.pdf",
-        thumb: "eolienne-piggott.jpg",
-      },
-    ],
-  },
-];
+const thumbOf = (name: string) => thumbs[`/src/assets/thumbs/${name}.jpg`].default;
 ---
 
 <Layout title="Documents — Canopée">
@@ -138,7 +41,7 @@ const sections = [
               {section.docs.map((doc) => (
                 <li>
                   <a
-                    href={doc.file}
+                    href={`/documents/${doc.pdf}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     class="flex gap-4 bg-white border border-stone-200 rounded-3xl p-5 shadow-sm hover:border-[#2D5016] hover:shadow-md hover:-translate-y-1 transition-all duration-300 group h-full">
