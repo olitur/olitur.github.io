@@ -1,0 +1,61 @@
+---
+lettre: "D"
+repere: 4
+nom: "Les Borrys"
+lieu: "Hameau des Borrys, Puget (84360)"
+coordonnees: "43.75400, 5.23551"
+surfaceParcelle: "700 m²"
+etat: "friche"
+irriguee: false
+ouvert: true
+typeParcelle: "friche"
+extent: { nord: "43.754472, 5.235500", sud: "43.753528, 5.235528" }
+resume: "Dix parcelles de 700 m² au hameau des Borrys, encore en friche — tarif réduit (0,10 €/m²/mois). Labour et amenée d'eau à organiser collectivement."
+---
+
+import Carousel from "@/components/carousel.astro";
+import FicheParcelle from "@/components/fiche-parcelle.astro";
+import Atouts from "@/components/atouts.astro";
+import ContactTerrain from "@/components/contact-terrain.astro";
+
+Le terrain D se situe au hameau des Borrys, le plus à l'ouest de l'ensemble. Ses dix parcelles de 700 m² sont encore en friche : elles sont proposées à tarif réduit (0,10 €/m²/mois) en contrepartie des travaux de préparation à mener.
+
+Labour, amendement et mise en place de l'irrigation seront organisés collectivement par l'association ; les futurs locataires sont invités à participer aux chantiers.
+
+<Carousel
+  dossier="terrain-d"
+  titre="Le terrain en images"
+  ratio="3/4"
+  largeur="34rem"
+  legendes={{
+    "01.jpg": "L'accès au terrain des Borrys ; serre maraîchère voisine au fond.",
+    "02.jpg": "Parcelles en cours de défrichage, débris végétaux en surface.",
+    "03.jpg": "Vue d'ensemble du terrain partiellement défriché.",
+  }}
+/>
+
+<FicheParcelle
+  titre="Parcelle en friche — 700 m²"
+  prix="0,10 €/m²/mois"
+  etat="Sol non travaillé"
+  irrigation="Irrigation à mettre en place"
+  href="/parcelles#type-friche"
+  points={[
+    "Terrain non encore travaillé, proposé à tarif réduit en contrepartie des travaux de préparation.",
+    "Labour, amendement et amenée d'eau organisés collectivement par l'association — chantiers participatifs.",
+    "Pour jardiniers motivés souhaitant façonner leur parcelle à moindre coût.",
+    "Tarif : 0,10 €/m²/mois, soit 840 €/an pour 700 m².",
+  ]}
+/>
+
+<Atouts
+  titre="Atouts du terrain des Borrys"
+  items={[
+    { icone: "🅿️", titre: "Stationnement", texte: "Stationnement aisé au hameau, à proximité immédiate des parcelles." },
+    { icone: "🌿", titre: "Broyat & paillage", texte: "Dépôt de broyat en accès libre, dont du broyat composté depuis plus de 2 ans — idéal comme paillage et amendement organique." },
+    { icone: "💰", titre: "Tarif le plus bas", texte: "Le terrain le plus économique de l'ensemble, en contrepartie des travaux de défrichage et de préparation à mener." },
+    { icone: "🌾", titre: "Voisinage maraîcher", texte: "Hameau au calme, à proximité d'autres maraîchers et de leurs serres — un environnement propice à l'entraide." },
+  ]}
+/>
+
+<ContactTerrain message="Une parcelle de ce terrain vous intéresse ?" />

@@ -1,0 +1,16 @@
+---
+interface Props {
+  message: string;
+}
+
+const { message } = Astro.props;
+---
+
+<div class="not-prose mt-10 p-6 bg-white border border-stone-200 rounded-3xl shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <p class="text-stone-700 font-medium">{message}</p>
+  <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+    <a href="/nous-rejoindre#contact" class="text-[#2D5016] underline">Faire une demande</a>
+    <a href="/nous-rejoindre" class="text-[#2D5016] underline">Devenir adhérent</a>
+    <a href="/documents" class="text-[#2D5016] underline">Documentation Canopée</a>
+  </div>
+</div>

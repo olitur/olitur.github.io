@@ -2,10 +2,10 @@
 import Button from "./ui/button.astro";
 ---
 
-<!-- Envoi via formsubmit.co (sans clé) — les messages arrivent sur o.turlier@canopee.org.
-     La première soumission depuis le domaine déclenche un email d'activation à confirmer. -->
+{/* Envoi via formsubmit.co (sans clé) — les messages arrivent sur contact@canopee.org.
+    La première soumission depuis le domaine déclenche un email d'activation à confirmer. */}
 <form
-  action="https://formsubmit.co/ajax/o.turlier@canopee.org"
+  action="https://formsubmit.co/ajax/contact@canopee.org"
   method="POST"
   id="form"
   class="needs-validation"
@@ -93,7 +93,7 @@ import Button from "./ui/button.astro";
 
     result.innerHTML = "Envoi…";
 
-    fetch("https://formsubmit.co/ajax/o.turlier@canopee.org", {
+    fetch("https://formsubmit.co/ajax/contact@canopee.org", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -2,9 +2,6 @@
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
-import ParcelleType from "@/components/parcelletype.astro";
-import AtoutsSite from "@/components/atouts-site.astro";
-import Carousel from "@/components/carousel.astro";
 import Breadcrumb from "@/components/breadcrumb.astro";
 import { parcellesParTerrain } from "@/data/parcelles";
 
@@ -90,36 +87,6 @@ const nbLibres = parcellesT.filter((p) => p.dispo).length;
 
       <div class="prose prose-stone mt-8 max-w-none">
         <Content />
-      </div>
-
-      <Carousel dossier={`terrain-${data.lettre.toLowerCase()}`} titre="Le terrain en images" />
-
-      <div class="mt-10">
-        <h2 class="font-semibold text-stone-700 mb-3">La parcelle type de ce terrain</h2>
-        <ParcelleType cle={data.typeParcelle} href={`/parcelles#type-${data.typeParcelle}`} />
-      </div>
-
-      {
-        data.atoutsCommuns && (
-          <div class="mt-10">
-            <AtoutsSite />
-          </div>
-        )
-      }
-
-      <div class="mt-10 p-6 bg-white border border-stone-200 rounded-3xl shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p class="text-stone-700 font-medium">
-          {
-            data.ouvert
-              ? "Une parcelle de ce terrain vous intéresse ?"
-              : "Ce terrain est en cours d'aménagement."
-          }
-        </p>
-        <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
-          <a href="/nous-rejoindre#contact" class="text-[#2D5016] underline">Faire une demande</a>
-          <a href="/nous-rejoindre" class="text-[#2D5016] underline">Devenir adhérent</a>
-          <a href="/documents" class="text-[#2D5016] underline">Documentation Canopée</a>
-        </div>
       </div>
     </div>
   </Container>
