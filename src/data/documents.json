@@ -55,13 +55,46 @@
         "source": "DE_P1_GuideMSV-2022",
         "pdf": "guide/annexes/guide-msv-2022.pdf",
         "thumb": "guide-msv-2022"
+      }
+    ]
+  },
+  {
+    "titre": "Eau — irrigation de la parcelle",
+    "docs": [
+      {
+        "titre": "La motopompe — mode d'emploi",
+        "desc": "Le document remis à chaque jardinier habilité : la machine et son circuit d'eau, les cinq vérifications avant tout démarrage, la conduite sur place (démarrage à la clé, arrêt au levier — car la clé n'arrête pas le moteur), les commandes par SMS et tous les cas de refus, les dix règles de vie du collectif, et un mémo d'une page à afficher près de la pompe.",
+        "source": "usage_motopompe",
+        "pdf": "eau/motopompe-mode-emploi.pdf",
+        "thumb": "motopompe-mode-emploi"
       },
       {
-        "titre": "Irrigation par motopompe",
-        "desc": "Dimensionnement et installation d'un système d'irrigation par motopompe depuis le canal ou la Durance, vers les cuves IBC des parcelles.",
-        "source": "DE_P2_irrigation-motopompe",
-        "pdf": "guide/annexes/irrigation-motopompe.pdf",
-        "thumb": "irrigation-motopompe"
+        "titre": "Motopompe — récapitulation d'utilisation 2026",
+        "desc": "Le bilan chiffré d'une saison d'irrigation, reconstitué depuis le journal de bord du boîtier : heures de marche, volume pompé, gazole et coût complet (carburant au prix du mois, huile, réparations, amortissement), répartition entre jardiniers, créneaux d'arrosage et incidents. Se termine par une planche A3 récapitulative à afficher.",
+        "source": "Motopompe-01_Canopee_recapitulation-utilisation_annee-2026",
+        "pdf": "eau/motopompe-recapitulation-2026.pdf",
+        "thumb": "motopompe-recapitulation-2026"
+      },
+      {
+        "titre": "Télécommander une motopompe diesel par SMS",
+        "desc": "Note technique : démarrer et arrêter à distance une motopompe installée en champ isolé, pour environ 175 € et sans modification irréversible de la machine. Analyse des organes de commande, architecture (carte 4G, relais, servomoteur), schéma de câblage, firmware complet, mise en service — et une section entière sur la sécurité d'usage quand la pompe est partagée entre plusieurs jardiniers.",
+        "source": "NT_P1_motopompe-telecommande",
+        "pdf": "eau/motopompe-telecommande.pdf",
+        "thumb": "motopompe-telecommande"
+      },
+      {
+        "titre": "Ce que raconte le journal de la motopompe",
+        "desc": "Note technique : une pompe télécommandée ne mesure qu'une chose, son temps de marche. Daté et attribué, il suffit pourtant à déduire le volume d'eau pompé, le gazole consommé, les échéances d'entretien et la part de chacun. Le journal embarqué, sa récupération par SMS et son exploitation, avec la méthode de recalage qui sépare l'ordre de grandeur du chiffre fiable.",
+        "source": "NT_P1_motopompe-journal",
+        "pdf": "eau/motopompe-journal.pdf",
+        "thumb": "motopompe-journal"
+      },
+      {
+        "titre": "Réseau d'arrosage — dimensionnement hydraulique",
+        "desc": "Note de calcul complète du réseau d'irrigation de la parcelle Durance : pertes de charge (Darcy-Weisbach, Colebrook-White), rampes à prises multiples (facteur de Christiansen), courbe de pompe, profil de pression jusqu'au dernier asperseur, équilibrage des rampes et temps de remplissage. Cinq scénarios comparés et le retour d'expérience de la pose sur le terrain.",
+        "source": "NT_P1_hydraulique-irrigation",
+        "pdf": "eau/hydraulique-irrigation.pdf",
+        "thumb": "hydraulique-irrigation"
       }
     ]
   },
